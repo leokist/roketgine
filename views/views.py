@@ -3,4 +3,4 @@ from app import app
 
 @app.route('/')
 def index():
-    return render_template('principal.html', titulo="Rocketgine" )
+    return render_template('principal.html', titulo="Rocketgine2" )

@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = "random string"
 
 db = SQLAlchemy(app)
 
-from views import *
+from views.views import *
 from models import *
 
 if __name__ == '__main__':
