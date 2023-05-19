@@ -1,3 +1,4 @@
+
 from math import log, e
 
 class Constantes:
@@ -21,11 +22,11 @@ class Propelente:
     def __repr__(self):
         return self.composicao
 
-o2_L = Propelente("Oxidante", "Oxigênio Líquido", "O2", 31.99880, -12979, 0, 2, 0, 0)
-ar_G = Propelente("Oxidante", "Ar", "(O2+3,76N2)", 28.9651159, -125.53, 0, 2, 0, 7.52)
-h2o2_L = Propelente("Oxidante", "Peroxido de Hidrogênio", "H2O2", 0, 0, 0, 2, 2, 0)
-hno3_L = Propelente("Oxidante", "Ácido Nítrico", "HNO3", 0, 0, 0, 3, 1, 1)
-#f_L = Propelente("Oxidante", "Flúor", "F", 0, 0, mols_c, mols_o, mols_h, mols_n)
+o2_L = Propelente("oxid", "Oxigênio Líquido", "O2", 31.99880, -12979, 0, 2, 0, 0)
+ar_G = Propelente("oxid", "Ar", "(O2+3,76N2)", 28.9651159, -125.53, 0, 2, 0, 7.52)
+h2o2_L = Propelente("oxid", "Peroxido de Hidrogênio", "H2O2", 0, 0, 0, 2, 2, 0)
+hno3_L = Propelente("oxid", "Ácido Nítrico", "HNO3", 0, 0, 0, 3, 1, 1)
+#f_L = Propelente("oxid", "Flúor", "F", 0, 0, mols_c, mols_o, mols_h, mols_n)
 
 c2h5oh_L = Propelente("Combustível", "Etanol", "C2H5OH", 46.06844, -277510, 2, 1, 6, 0)
 h2_L = Propelente("Combustível", "Hidrogênio", "H2", 15, -100000, 0, 0, 2, 0)
@@ -192,16 +193,16 @@ n.coeficientes_200_1000(1000, 200, 0.000000000E+00, 0.000000000E+00, 2.500000000
 
 class Combustao():
     """Define os reagentes da combustão"""
-    def __init__(self, combustivel, oxidante):
-        self.combustivel = combustivel
-        self.oxidante = oxidante
-        self.propelentes = [combustivel, oxidante]
+    def __init__(self, comb, oxid):
+        self.comb = comb
+        self.oxid = oxid
+        self.propelentes = [comb, oxid]
 
     """
              b                      c             d                      a
-    [self.oxidante.mols_o, - prod1.mols_o, - prod2.mols_o, - self.combustivel.mols_o],
-    [self.oxidante.mols_h, - prod1.mols_h, - prod2.mols_h, - self.combustivel.mols_h],
-    [self.oxidante.mols_c, - prod1.mols_c, - prod2.mols_c, - self.combustivel.mols_c],
+    [self.oxid.mols_o, - prod1.mols_o, - prod2.mols_o, - self.comb.mols_o],
+    [self.oxid.mols_h, - prod1.mols_h, - prod2.mols_h, - self.comb.mols_h],
+    [self.oxid.mols_c, - prod1.mols_c, - prod2.mols_c, - self.comb.mols_c],
     """
     def reacao_combustao(self, razao_equiv=1):
         """
@@ -215,11 +216,11 @@ class Combustao():
       
         # Define os produtos de uma reação estequiométrica
         "a*COMB + b+OXID ---> c*H2O + d*CO2 + e*N2"
-        if razao_equiv != 0 and (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0) and (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+        if razao_equiv != 0 and (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
             self.produtos_estequiometrico.append(h2o)
-        if razao_equiv != 0 and (self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0) and (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+        if razao_equiv != 0 and (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
             self.produtos_estequiometrico.append(co2)
-        if razao_equiv != 0 and (self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0):
+        if razao_equiv != 0 and (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
             self.produtos_estequiometrico.append(n2)
               
         print(self.produtos_estequiometrico)
@@ -231,13 +232,13 @@ class Combustao():
         n_propelentes = len(self.propelentes)
 
         # Obtém a quantidade total de elementos
-        if self.combustivel.mols_o != 0 or self.oxidante.mols_o != 0:
+        if self.comb.mols_o != 0 or self.oxid.mols_o != 0:
             n_elementos = 1
-        if self.combustivel.mols_h != 0 or self.oxidante.mols_h != 0:
+        if self.comb.mols_h != 0 or self.oxid.mols_h != 0:
             n_elementos += 1
-        if self.combustivel.mols_c != 0 or self.oxidante.mols_c != 0:
+        if self.comb.mols_c != 0 or self.oxid.mols_c != 0:
             n_elementos += 1
-        if self.combustivel.mols_n != 0 or self.oxidante.mols_n != 0:
+        if self.comb.mols_n != 0 or self.oxid.mols_n != 0:
             n_elementos += 1
             
         # Gera uma matriz de template com as linhas necessárias
@@ -344,7 +345,7 @@ class Combustao():
             col += 1
 
         self.matriz_estequiometrica = matriz
-        razao_mistura_estequiometrica = (self.matriz_estequiometrica[0][-1]*self.oxidante.massa_molar)/(1*self.combustivel.massa_molar)
+        razao_mistura_estequiometrica = (self.matriz_estequiometrica[0][-1]*self.oxid.massa_molar)/(1*self.comb.massa_molar)
         razao_mistura = razao_mistura_estequiometrica / self.razao_equiv
         print(f"rme: {razao_mistura_estequiometrica}")
         print(f"rm: {razao_mistura}")
@@ -361,19 +362,19 @@ class Combustao():
             print(f"n_oxid: {n_oxid}")
 
             # Número de mols dos elementos
-            if self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0:
+            if self.comb.mols_c > 0 or self.oxid.mols_c > 0:
                 n_c = n_comb*comb.mols_c + n_oxid*oxid.mols_c
                 n_total = n_c
                 print(f"Nc:{n_c}")
-            if self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0:
+            if self.comb.mols_o > 0 or self.oxid.mols_o > 0:
                 n_o = n_comb*comb.mols_o + n_oxid*oxid.mols_o
                 n_total += n_o
                 print(f"No:{n_o}")
-            if self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0:
+            if self.comb.mols_h > 0 or self.oxid.mols_h > 0:
                 n_h = n_comb*comb.mols_h + n_oxid*oxid.mols_h
                 n_total += n_h
                 print(f"Nh:{n_h}")
-            if self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0:
+            if self.comb.mols_n > 0 or self.oxid.mols_n > 0:
                 n_n = n_comb*comb.mols_n + n_oxid*oxid.mols_n
                 n_total += n_n
                 print(f"Nn:{n_n}")
@@ -381,47 +382,47 @@ class Combustao():
 
             # Define os produtos de uma reação com dissociação
             "a*COMB + b+OXID ---> c*CO2 + d*CO + e*H2O + f*OH + g*H2 + h*H + i*O2 + j*O + k*N2 + l*N"
-            if (self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0) and (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+            if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
                 self.produtos_dissociacao.append(co2)
                 self.produtos_dissociacao.append(co)
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0) and (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 self.produtos_dissociacao.append(h2o)
                 self.produtos_dissociacao.append(oh)
-            if (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 self.produtos_dissociacao.append(h2)
                 self.produtos_dissociacao.append(h)
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
                 self.produtos_dissociacao.append(o2)
                 self.produtos_dissociacao.append(o)
-            if (self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0):
+            if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
                 self.produtos_dissociacao.append(n2)
                 self.produtos_dissociacao.append(n)
 
             # Calcula as funções de gibbs
-            if (self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0) and (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+            if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
                 gibbs_co2 = co2.funcao_gibbs(temp_adiab)
                 gibbs_co = co.funcao_gibbs(temp_adiab)
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0) and (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 gibbs_h2o = h2o.funcao_gibbs(temp_adiab)
                 gibbs_oh = oh.funcao_gibbs(temp_adiab)
-            if (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 gibbs_h2 = h2.funcao_gibbs(temp_adiab)
                 gibbs_h = h.funcao_gibbs(temp_adiab)
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
                 gibbs_o2 = o2.funcao_gibbs(temp_adiab)
                 gibbs_o = o.funcao_gibbs(temp_adiab)
-            if (self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0):
+            if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
                 gibbs_n2 = n2.funcao_gibbs(temp_adiab)
                 gibbs_n = n.funcao_gibbs(temp_adiab)
 
             # Calcula as constantes de dissociação
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0) and (self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_c > 0 or self.oxid.mols_c > 0):
                 # CO2 --> CO + O
                 kp1 = e**(-(1*gibbs_co + 1*gibbs_o - 1*gibbs_co2)/(Constantes.const_univ_gases()*temp_adiab))
                 print(f"kp1: {kp1}")
                 if kp1 < 0.001:
                     print(f"kp1={kp1}<0.001, a dissociação CO2 --> CO + O não irá ocorrer a esta temperatura")
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0) and (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 # H2O --> 2H + O
                 kp2 = e**(-(2*gibbs_h + 1*gibbs_o - 1*gibbs_h2o)/(Constantes.const_univ_gases()*temp_adiab))
                 # OH --> H + O
@@ -437,19 +438,19 @@ class Combustao():
                     print(f"kp3={kp3}<0.001, a dissociação OH --> H + O não irá ocorrer a esta temperatura")
                 if kp7 < 0.001:
                     print(f"kp7={kp7}<0.001, a dissociação H2O --> OH + O não irá ocorrer a esta temperatura")
-            if (self.combustivel.mols_h > 0 or self.oxidante.mols_h > 0):
+            if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
                 # H2 --> 2 H
                 kp4 = e**(-(2*gibbs_h - 1*gibbs_h2)/(Constantes.const_univ_gases()*temp_adiab))
                 if kp4 < 0.001:
                     print(f"kp4={kp4}<0.001, a dissociação H2 --> 2 H não irá ocorrer a esta temperatura")
                 print(f"kp4: {kp4}")
-            if (self.combustivel.mols_o > 0 or self.oxidante.mols_o > 0):
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
                 # O2 --> 2 O
                 kp5 = e**(-(2*gibbs_o - 1*gibbs_o2)/(Constantes.const_univ_gases()*temp_adiab))
                 if kp5 < 0.001:
                     print(f"kp5={kp5}<0.001, a dissociação H2 --> 2 H não irá ocorrer a esta temperatura")
                 print(f"kp5: {kp5}")
-            if (self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0):
+            if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
                 # N2 --> 2 N 
                 kp6 = e**(-(2*gibbs_n - 1*gibbs_n2)/(Constantes.const_univ_gases()*temp_adiab))
                 if kp6 < 0.001:
@@ -474,7 +475,7 @@ class Combustao():
                 
                 N_o = (kp5*N_o2/y)**0.5
 
-                if self.combustivel.mols_c > 0 or self.oxidante.mols_c > 0:
+                if self.comb.mols_c > 0 or self.oxid.mols_c > 0:
                     N_co2 = (n_c*kp5)/((kp1*N_o)+kp5)
                     N_co = n_c-N_co2
                 else:
@@ -486,7 +487,7 @@ class Combustao():
                 N_h = (N_o*N_oh*kp3)/(N_o2*kp5)
                 N_h2 = (n_h-2*N_h2o-N_oh-N_h)/2
 
-                if self.combustivel.mols_n > 0 or self.oxidante.mols_n > 0:
+                if self.comb.mols_n > 0 or self.oxid.mols_n > 0:
                     N_n_a = (2*N_o2*kp5)/(kp6*N_o**2)
                     N_n_b = 1
                     N_n_c = -n_n
@@ -558,7 +559,7 @@ class Combustao():
 
     @property
     def b(self):
-        """Retorna o número de mols do Oxidante"""
+        """Retorna o número de mols do oxid"""
         l=len(self.matriz)
         b = self.matriz[0][l]
         return b
