@@ -25,7 +25,8 @@ class Combustao():
         self.produtos_estequiometrico = []
         self.produtos_dissociacao = []
         self.matriz_estequiometrica = []
-      
+
+        
         # Define os produtos de uma reação estequiométrica
         "a*COMB + b+OXID ---> c*H2O + d*CO2 + e*N2"
         if razao_equiv != 0 and (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
@@ -34,7 +35,7 @@ class Combustao():
             self.produtos_estequiometrico.append(co2)
         if razao_equiv != 0 and (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
             self.produtos_estequiometrico.append(n2)
-              
+                
         print(self.produtos_estequiometrico)
 
         # Obtém a quantidade total de produtos da reação
@@ -52,7 +53,7 @@ class Combustao():
             n_elementos += 1
         if self.comb.mols_n != 0 or self.oxid.mols_n != 0:
             n_elementos += 1
-            
+                
         # Gera uma matriz de template com as linhas necessárias
         
         matriz = [] #self.matriz
@@ -159,6 +160,10 @@ class Combustao():
         self.matriz_estequiometrica = matriz
         razao_mistura_estequiometrica = (self.matriz_estequiometrica[0][-1]*self.oxid.massa_molar)/(1*self.comb.massa_molar)
         razao_mistura = razao_mistura_estequiometrica / self.razao_equiv
+        
+        if razao_equiv == 1:
+            self.n_comb = 1
+            self.n_oxid = self.matriz_estequiometrica[0][-1]
         print(f"rme: {razao_mistura_estequiometrica}")
         print(f"rm: {razao_mistura}")
 
@@ -168,47 +173,29 @@ class Combustao():
         if razao_equiv != 1:
             temp_adiab = 3234.87
             # Número de mols dos Propelentes
-            n_comb = (self.matriz_estequiometrica[0][-1] * self.oxid.massa_molar) / (razao_mistura * self.comb.massa_molar)
-            n_oxid = self.matriz_estequiometrica[0][-1]
-            print(f"n_comb: {n_comb}")
-            print(f"n_oxid: {n_oxid}")
+            self.n_comb = (self.matriz_estequiometrica[0][-1] * self.oxid.massa_molar) / (razao_mistura * self.comb.massa_molar)
+            self.n_oxid = self.matriz_estequiometrica[0][-1]
+            print(f"n_comb: {self.n_comb}")
+            print(f"n_oxid: {self.n_oxid}")
 
             # Número de mols dos elementos
             if self.comb.mols_c > 0 or self.oxid.mols_c > 0:
-                n_c = n_comb*self.comb.mols_c + n_oxid*self.oxid.mols_c
+                n_c = self.n_comb*self.comb.mols_c + self.n_oxid*self.oxid.mols_c
                 n_total = n_c
                 print(f"Nc:{n_c}")
             if self.comb.mols_o > 0 or self.oxid.mols_o > 0:
-                n_o = n_comb*self.comb.mols_o + n_oxid*self.oxid.mols_o
+                n_o = self.n_comb*self.comb.mols_o + self.n_oxid*self.oxid.mols_o
                 n_total += n_o
                 print(f"No:{n_o}")
             if self.comb.mols_h > 0 or self.oxid.mols_h > 0:
-                n_h = n_comb*self.comb.mols_h + n_oxid*self.oxid.mols_h
+                n_h = self.n_comb*self.comb.mols_h + self.n_oxid*self.oxid.mols_h
                 n_total += n_h
                 print(f"Nh:{n_h}")
             if self.comb.mols_n > 0 or self.oxid.mols_n > 0:
-                n_n = n_comb*self.comb.mols_n + n_oxid*self.oxid.mols_n
+                n_n = self.n_comb*self.comb.mols_n + self.n_oxid*self.oxid.mols_n
                 n_total += n_n
                 print(f"Nn:{n_n}")
             print(f"Nc:{n_c/n_total} No:{n_o/n_total} Nh:{n_h/n_total}")
-
-            # Define os produtos de uma reação com dissociação
-            "a*COMB + b+OXID ---> c*CO2 + d*CO + e*H2O + f*OH + g*H2 + h*H + i*O2 + j*O + k*N2 + l*N"
-            if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
-                self.produtos_dissociacao.append(co2)
-                self.produtos_dissociacao.append(co)
-            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
-                self.produtos_dissociacao.append(h2o)
-                self.produtos_dissociacao.append(oh)
-            if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
-                self.produtos_dissociacao.append(h2)
-                self.produtos_dissociacao.append(h)
-            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
-                self.produtos_dissociacao.append(o2)
-                self.produtos_dissociacao.append(o)
-            if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
-                self.produtos_dissociacao.append(n2)
-                self.produtos_dissociacao.append(n)
 
             # Calcula as funções de gibbs
             if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
@@ -343,17 +330,55 @@ class Combustao():
                 #print(f"o2: {N_o2/N_total}, o: {N_o/N_total}, co2: {N_co2/N_total}, co: {N_co/N_total}, h: {N_h/N_total}, h2: {N_h2/N_total}, oh: {N_oh/N_total}, h2o: {N_h2o/N_total}, n: {N_n/N_total}, n2: {N_n2/N_total} razao_mist: {razao_mistura}")
             print(f"o2: {N_o2/n_total_calc}, o: {N_o/n_total_calc}, co2: {N_co2/n_total_calc}, co: {N_co/n_total_calc}, h: {N_h/n_total_calc}, h2: {N_h2/n_total_calc}, oh: {N_oh/n_total_calc}, h2o: {N_h2o/n_total_calc}, n: {N_n/n_total_calc}, n2: {N_n2/n_total_calc} razao_mist: {razao_mistura}")
                 
+            # Define os produtos de uma reação com dissociação
+            "a*COMB + b+OXID ---> c*CO2 + d*CO + e*H2O + f*OH + g*H2 + h*H + i*O2 + j*O + k*N2 + l*N"
+            if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
+                self.produtos_dissociacao.append((co2,N_co2/n_total_calc))
+                self.produtos_dissociacao.append((co, N_co/n_total_calc))
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
+                self.produtos_dissociacao.append((h2o, N_h2o/n_total_calc))
+                self.produtos_dissociacao.append((oh, N_oh/n_total_calc))
+            if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
+                self.produtos_dissociacao.append((h2, N_h2/n_total_calc))
+                self.produtos_dissociacao.append((h, N_h/n_total_calc))
+            if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
+                self.produtos_dissociacao.append((o2, N_o2/n_total_calc))
+                self.produtos_dissociacao.append((o, N_o/n_total_calc))
+            if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
+                self.produtos_dissociacao.append((n2, N_n2/n_total_calc))
+                self.produtos_dissociacao.append((n, N_n/n_total_calc))
+
+
+            #self.produtos_dissociacao_mols = []
+            #self.produtos_dissociacao_mols.append(N_co2)
+            #self.produtos_dissociacao_mols.append(N_co)
+            #self.produtos_dissociacao_mols.append(N_h2o)
+            #self.produtos_dissociacao_mols.append(N_oh)
+            #self.produtos_dissociacao_mols.append(N_h2)
+            #self.produtos_dissociacao_mols.append(N_h)
+            #self.produtos_dissociacao_mols.append(N_o2)
+            #self.produtos_dissociacao_mols.append(N_o)
+
+            #self.produtos_dissociacao_fracao_molar = []
+            #self.produtos_dissociacao_fracao_molar.append(N_co2/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_co/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_h2o/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_oh/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_h2/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_h/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_o2/n_total_calc)
+            #self.produtos_dissociacao_fracao_molar.append(N_o/n_total_calc)
                 #print(f"RME: {razao_mistura_estequiometrica}")
                 #print(f"RE: {razao_equiv}")
                 #print(f"RE: {razao_mistura}")
             
     @property
-    def reacao_combustao_resultado(self):
+    def reacao_estequiometrica_resultado(self):
         """Exibe o resultado da reação de combustão com o número de mols de cada elemento"""
         a = 1
         matriz = self.matriz_estequiometrica
 
-        reacao = f"{a} {self.propelentes[0]} + {matriz[0][-1]} {self.propelentes[1]} -->"
+        reacao = f"{a} {self.propelentes[0]} + {self.n_oxid} {self.propelentes[1]} -->"
 
         x = 0
         for i in self.produtos_estequiometrico:
@@ -364,14 +389,35 @@ class Combustao():
         return reacao
 
     @property
+    def reacao_dissociacao_resultado(self):
+        """Exibe o resultado da reação de combustão com o número de mols de cada elemento"""
+        a = self.n_comb
+        matriz = self.matriz_estequiometrica
+
+        reacao = f"{a} {self.propelentes[0]} + {self.n_oxid} {self.propelentes[1]} -->"
+
+        print(self.produtos_dissociacao)
+
+        x = 0
+        for i in self.produtos_dissociacao:
+            reacao += f" {self.produtos_dissociacao[x][1]} "
+            reacao += f" {self.produtos_dissociacao[x][0]}"
+            if self.produtos_dissociacao[x] == self.produtos_dissociacao[-1]:
+                reacao
+            else:
+                reacao += " + "
+            x += 1
+        return reacao
+
+    @property
     def a(self):
         """Retorna o número de mols do Combustível"""
-        a = 1.0
+        a = self.n_comb
         return a
 
     @property
     def b(self):
-        """Retorna o número de mols do oxid"""
+        """Retorna o número de mols do oxidante"""
         l=len(self.matriz)
         b = self.matriz[0][l]
         return b
@@ -403,14 +449,14 @@ class Combustao():
             e = "Elemento inexistente"
         return e
 
-    #@property
-    #def razao_mistura_estequiometrica(self):
-    #    return razao_mistura_estequiometrica
+    @property
+    def razao_mistura_estequiometrica(self):
+        return self.razao_mistura_estequiometrica
 
-    #@property
-    #def razao_mistura(self):
-    #    return razao_mistura
+    @property
+    def razao_mistura(self):
+        return self.razao_mistura
 
-    #@property
-    #def razao_equivalencia(self):
-    #    return self.razao_equivalencia
+    @property
+    def razao_equivalencia(self):
+        return self.razao_equivalencia

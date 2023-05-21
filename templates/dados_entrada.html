@@ -1,0 +1,73 @@
+<form class="formDadosEntrada" action="{{ url_for('resultado') }}" method="post"> 
+  <div class="formDadosEntrada_prop">
+    <p class="texto1">Propelentes</p>
+    <div class="container_input">
+      <label class="texto3 label_prop" for="comb">Combustível</label>
+      <select name="comb" id="comb" value="{{ request.form['comb'] }}">
+        <option value="c2h5oh_L">Etanol [c2h5oh_L]</option>
+        <option value="h2_L">Hidrogênio [h2_L]</option>
+        <option value="c8h18_L">Gasolina [c8h18_L]</option>
+        <option value="c3h8_L">Propano [c3h8_L]</option>
+        <option value="c2h8n2_L">Dimetil-hidrazina Assimétrica [c2h8n2_L]</option>
+        <option value="c42h72o14_L">RG1 - Ginsenosido [c42h72o14_L]</option>
+        <option value="nh3_L">Amônia [nh3_L]</option>
+      </select>
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_prop" for="comb_temp">Temperatura [°C]</label>
+      <input type="number" id="comb_temp" name="comb_temp" class="input_number" step="1.00" value="25">
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_prop" for="oxid">Oxidante</label>
+      <select name="oxid" id="oxid" value="{{ request.form['oxid'] }}">
+        <option value="o2_L ">Oxigênio Líquido [o2_L]</option>
+        <option value="ar_G">Ar [O2+3,76N2]</option>
+        <option value="h2o2_L">Peroxido de Hidrogênio [h2o2_L]</option>
+        <option value="hno3_L">Ácido Nítrico [hno3_L]</option>
+      </select>
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_prop" for="oxid_temp">Temperatura [°C]</label>
+      <input type="number" id="oxid_temp" name="oxid_temp" class="input_number" step="1.00" value="25">
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_prop" for="raz_eq">Razão Equivalência</label>
+      <input type="number" id="raz_eq" name="raz_eq" class="input_number" value="{{ request.form['raz_eq'] }}" step="0.01" min="0.00">
+    </div>
+  </div>
+
+  <div class="formDadosEntrada_pressoes">
+    <p class="texto1">Pressões</p>
+    <div class="container_input">
+      <label class="texto3 label_pressao" for="pressao_camara">Câmara Combustão[atm]</label>
+      <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="15">
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_pressao" for="pressao_externa">Ambiente[atm]</label>
+      <input type="number" id="pressao_externa" name="pressao_externa" class="input_number" step="0.50" value="1">
+    </div>
+  </div>
+
+  <div class="formDadosEntrada_motor">
+    <p class="texto1">Dados do Motor</p>
+    <div class="container_input">
+      <label class="texto3 label_motor" for="comp_caract">Comp Característico[m]</label>
+      <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.50" value="15">
+    </div>
+    <p>Injetores</p>
+    <div class="container_input">
+      <label class="texto3 label_motor" for="ang_inj_comb">Angulo Injeção Comb[°]</label>
+      <input type="number" id="ang_inj_comb" name="ang_inj_comb" class="input_number" step="0.50" min="0" max="90" value="15">
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_motor" for="ang_inj_oxid">Angulo Injeção Oxid[°]</label>
+      <input type="number" id="ang_inj_oxid" name="ang_inj_oxid" class="input_number" step="0.50" min="0" max="90" value="15">
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_motor" for="coef_desc">Coeficiente de Descarga</label>
+      <input type="number" id="coef_desc" name="coef_desc" class="input_number" step="0.50" min="0" max="90" value="15">
+    </div>
+  </div>
+
+  <button type="submit" class="botao_calcular">Calcular</button>
+</form>

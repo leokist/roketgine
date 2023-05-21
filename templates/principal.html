@@ -1,12 +1,4 @@
-{% extends "template.html" %}
-{% block conteudo %}
-
-<form action="">
-    <label for="categoria">Categoria</label>
-	<input type="" id="categoria" name="categoria" class="form-control">
-    <p>teste2</p>
-
-</form>
-
-    
-{% endblock %}
+{% include "head.html" %}
+    {% include "dados_entrada.html" %}
+    {% include "resultado.html" %}
+{% include "footer.html" %}

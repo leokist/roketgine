@@ -1,0 +1,11 @@
+@import url("dados_entrada.css");
+
+.texto1 {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.texto3 {
+    font-size: 14px;
+}
