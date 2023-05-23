@@ -66,39 +66,63 @@ class Combustao():
         n_especies = n_produtos + n_propelentes
         lin = 0
         col = 0
+        contador = 0
         while lin < n_elementos:
-            while col != (n_especies - 1):
-                if lin == 0:
-                    if col == 0:
-                        matriz[lin].insert(col,self.propelentes[1].mols_o)
-                    if col != 0:
-                        matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_o)
-                    if col == (n_produtos - 1):
-                        matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_o)
-                elif lin == 1:
-                    if col == 0:
-                        matriz[lin].insert(col,self.propelentes[1].mols_h)
-                    if col != 0:
-                        matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_h)
-                    if col == (n_produtos - 1):
-                        matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_h)
-                elif lin == 2:
-                    if col == 0:
-                        matriz[lin].insert(col,self.propelentes[1].mols_c)
-                    if col != 0:
-                        matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_c)
-                    if col == (n_produtos - 1):
-                        matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_c)
-                elif lin == 3:
-                    if col == 0:
-                        matriz[lin].insert(col,self.propelentes[1].mols_n)
-                    if col != 0:
-                        matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_n)
-                    if col == (n_produtos - 1):
-                        matriz[lin].insert(col+1, - 1 * self.propelentes[0].mols_n)
-                col += 1
-            col = 0
-            lin += 1
+            if contador == 0:
+                if self.comb.mols_o == 0 and self.oxid.mols_o == 0:
+                    lin = 0
+                else:
+                    while col != (n_especies - 1):
+                        if col == 0:
+                            matriz[lin].insert(col,self.propelentes[1].mols_o)
+                        if col != 0:
+                            matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_o)
+                        if col == (n_produtos - 1):
+                            matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_o)
+                        col += 1
+                    lin += 1
+                    col = 0
+            elif contador == 1:
+                if self.comb.mols_h == 0 and self.oxid.mols_h == 0:
+                    lin = 1
+                else:
+                    while col != (n_especies - 1):
+                        if col == 0:
+                            matriz[lin].insert(col,self.propelentes[1].mols_h)
+                        if col != 0:
+                            matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_h)
+                        if col == (n_produtos - 1):
+                            matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_h)
+                        col += 1 
+                    lin += 1
+                    col = 0
+            elif contador == 2:
+                if self.comb.mols_c == 0 and self.oxid.mols_c == 0:
+                    lin = 2
+                else:
+                    while col != (n_especies - 1):
+                        if col == 0:
+                            matriz[lin].insert(col,self.propelentes[1].mols_c)
+                        if col != 0:
+                            matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_c)
+                        if col == (n_produtos - 1):
+                            matriz[lin].insert(col+1, -1 * self.propelentes[0].mols_c)
+                        col += 1 
+                    lin += 1
+                    col = 0
+            elif contador == 3:
+                if self.comb.mols_n != 0 or self.oxid.mols_n != 0:
+                    while col != (n_especies - 1):
+                        if col == 0:
+                            matriz[lin].insert(col,self.propelentes[1].mols_n)
+                        if col != 0:
+                            matriz[lin].insert(col, -1 * self.produtos_estequiometrico[col-1].mols_n)
+                        if col == (n_produtos - 1):
+                            matriz[lin].insert(col+1, - 1 * self.propelentes[0].mols_n)
+                        col += 1
+                    lin += 1
+                    col = 0
+            contador += 1
 
         """
         # Cálculo do numero de mol de cada produto e reagente
