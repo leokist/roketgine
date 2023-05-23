@@ -108,9 +108,12 @@ class Gas():
         #print(f"{self.composicao} href:{href}, hf:{hf}, h:{h}, s:{s}, gibbs:{self.gibbs}")
         return self.gibbs
 
-#"h form - massa molar - c - o - h - n"
-
-
+"""
+Dados obtidos de:
+NASA Glenn coefficients for calculating thermodynamic properties of individual species.
+GORDON, S.; MCBRIDE, B. J.; ZEHE M. J.
+Glenn Research Center, 2002.
+"""
 
 h = Gas("Hidrogênio", "H", 217998.828, 1.00794, 0, 0 , 1, 0)
 h2 = Gas("", "H2", 0.000, 2.01588, 0, 0 , 1, 0)
