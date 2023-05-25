@@ -1,0 +1,7 @@
+.div_resultado {
+    display: inline-block;
+    width: 90%;
+    height: 90vh;
+    border: 1px solid black;
+    border-radius: 10px;
+}

@@ -1,11 +1,40 @@
 @import url("dados_entrada.css");
+@import url("resultado.css");
+
+:root {
+    --fonte: 'Ubuntu Mono';
+}
+
+body {
+    font-family: var(--fonte);
+}
+
+label {
+    margin-top: 5px;
+}
+
+.titulo {
+    font-weight: 700;
+    font-size: 32px;
+    text-align: center;
+    margin: none;
+}
 
 .texto1 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
 }
 
+.texto2 {
+    font-size: 16px;
+    font-style: italic;
+}
+
 .texto3 {
-    font-size: 14px;
+    font-size: 16px;
+}
+
+.div_principal {
+    display: flex;
 }

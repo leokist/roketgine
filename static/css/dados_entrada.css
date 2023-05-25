@@ -2,6 +2,9 @@
     border: 1px solid black;
     display: inline-block;
     border-radius: 10px;
+    width: 320px;
+    height: 90vh;
+    margin-right: 5px;
 }
 
 .formDadosEntrada_prop, .formDadosEntrada_pressoes, .formDadosEntrada_motor {
@@ -9,26 +12,22 @@
 }
 
 .label_prop {
-    display: inline-block;
+    display: block;
     width: 140px;
-    background-color: red;
 }
 
-.label_pressao {
+.label_dados_entrada {
     display: inline-block;
-    width: 180px;
-    background-color: blue;
+    width: 189px;
 }
 
-.label_motor {
-    display: inline-block;
-    width: 180px;
-    background-color: green;
-}
+.select_dados_entrada {
+    width: 100%;
+} 
 
 .input_number {
-    display: inline-block;
     width: 75px;
+    float: right;
 }
 
 .botao_calcular {
