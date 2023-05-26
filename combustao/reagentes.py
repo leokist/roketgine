@@ -1,24 +1,25 @@
 class Propelente:
     """
     Classe que cria um Propelente, Combustível ou Oxidante
-    massa_molar: [kg/kmol] | entalpia_formacao: [kJ/kmol] | temperatura: [K] |
+    massa_molar: [kg/kmol] | entalpia_formacao: [kJ/kmol] | entalpia_t_referência [kJ/kmol] | temperatura: [K] |
     """
-    def __init__(self, tipo, nome, composicao, estado, massa_molar, entalpia_formacao, mols_c, mols_o, mols_h, mols_n, temperatura):
+    def __init__(self, tipo, nome, composicao, estado, massa_molar, entalpia_formacao, entalpia_t_referencia, mols_c, mols_o, mols_h, mols_n, temperatura_referencia):
         self.tipo = tipo
         self.nome = nome
         self.composicao = composicao
         self.estado = estado
         self.massa_molar = massa_molar
-        self.entalpia_formcao = entalpia_formacao
+        self.entalpia_formacao = entalpia_formacao
+        self.entalpia_t_referencia = entalpia_t_referencia
         self.mols_c = mols_c
         self.mols_o = mols_o
         self.mols_h = mols_h
         self.mols_n = mols_n
-        self.temperatura = temperatura
+        self.temperatura = temperatura_referencia
 
     def __repr__(self):
         return self.composicao
-    
+
 """
 Dados obtidos de:
 NASA Glenn coefficients for calculating thermodynamic properties of individual species.
@@ -30,17 +31,147 @@ Apendice D (para entalpia_formacao)
 """
 
 # OXIDANTES
-o2_L = Propelente("Oxidante", "Oxigênio Líquido", "O2", "Líquido",31.99880, 0, 0, 2, 0, 0, 90.17)
-ar_G = Propelente("Oxidante", "Ar", "(O2+3,76N2)", "Gás",28.96518, -125.53, 0, 2, 0, 7.52, 298.15)
-h2o2_L = Propelente("Oxidante", "Peroxido de Hidrogênio", "H2O2", "Líquido",34.01468, -187780, 0, 2, 2, 0, 298.15)
-hno3_L = Propelente("Oxidante", "Ácido Nítrico", "HNO3", "Líquido", 63.01288, -173013, 0, 3, 1, 1, 298.15)
-
+O2_L = Propelente(
+    tipo="Oxidante",
+    nome="Oxigênio Líquido",
+    composicao="O2",
+    estado="Líquido",
+    massa_molar = 31.99880,
+    entalpia_formacao= 0,
+    entalpia_t_referencia= -12979,
+    mols_c = 0,
+    mols_o = 2,
+    mols_h = 0,
+    mols_n = 0,
+    temperatura_referencia = 90.17
+)
+Air_G = Propelente(
+    tipo ="Oxidante",
+    nome = "Ar",
+    composicao = "(O2+3,76N2)",
+    estado = "Gás",
+    massa_molar = 28.96518,
+    entalpia_formacao = -125.53,
+    entalpia_t_referencia = -126,
+    mols_c = 0,
+    mols_o = 2,
+    mols_h = 0,
+    mols_n = 7.52,
+    temperatura_referencia = 298.15
+)
+H2O2_L = Propelente(
+    tipo = "Oxidante",
+    nome = "Peroxido de Hidrogênio",
+    composicao = "H2O2",
+    estado = "Líquido",
+    massa_molar = 34.01468,
+    entalpia_formacao = -187780,
+    entalpia_t_referencia = -187780,
+    mols_c = 0,
+    mols_o = 2,
+    mols_h = 2,
+    mols_n = 0,
+    temperatura_referencia = 298.15
+)
+HNO3_L = Propelente(
+    tipo = "Oxidante",
+    nome = "Ácido Nítrico",
+    composicao = "HNO3",
+    estado = "Líquido",
+    massa_molar = 63.01288,
+    entalpia_formacao = -173013,
+    entalpia_t_referencia = -173013,
+    mols_c = 0,
+    mols_o = 3,
+    mols_h = 1,
+    mols_n = 1,
+    temperatura_referencia = 298.15
+)
+ 
 # COMBUSTÍVEIS
-c2h5oh_L = Propelente("Combustível", "Etanol", "C2H5OH", "Líquido", 46.06844, -277510.000, 2, 1, 6, 0, 298.15)
-h2_L = Propelente("Combustível", "Hidrogênio", "H2", "Líquido", 2.01588, -9012.000, 0, 0, 2, 0, 20.27)
-c8h18_L = Propelente("Combustível", "Gasolina", "C8H18", "Líquido", 114.22852, -250260.000, 8, 0, 18, 0, 298.15)
-c3h8_L = Propelente("Combustível", "Propano", "C3H8", "Líquido", 44.09562, -128228.000, 3, 0, 8, 0, 231.08)
-c2h8n2_L = Propelente("Combustível", "Dimetil-hidrazina Assimétrica", "C2H8N2", "Líquido", 60.09840, 48900.000, 2, 0, 8, 2, 298.15)
-nh3_L = Propelente("Combustível", "Amônia", "NH3", "Líquido", 17.03056, -71555.000, 0, 0, 3, 1, 239.72)
+C2H5OH_L = Propelente(
+    tipo = "Combustível",
+    nome = "Etanol",
+    composicao = "C2H5OH",
+    estado = "Líquido",
+    massa_molar = 46.06844,
+    entalpia_formacao = -277510.000,
+    entalpia_t_referencia = -277510,
+    mols_c = 2,
+    mols_o = 1,
+    mols_h = 6,
+    mols_n = 0,
+    temperatura_referencia = 298.15
+)
+H2_L = Propelente(
+    tipo = "Combustível", 
+    nome = "Hidrogênio",
+    composicao = "H2", 
+    estado = "Líquido",
+    massa_molar = 2.01588,
+    entalpia_formacao = 0,
+    entalpia_t_referencia =  -9012,
+    mols_c = 0,
+    mols_o = 0,
+    mols_h = 2,
+    mols_n = 0,
+    temperatura_referencia = 20.27
+)
+C8H18_L = Propelente(
+    tipo = "Combustível",
+    nome = "Gasolina",
+    composicao = "C8H18",
+    estado = "Líquido",
+    massa_molar = 114.22852,
+    entalpia_formacao = -250260.000,
+    entalpia_t_referencia = -250260,
+    mols_c = 8,
+    mols_o = 0,
+    mols_h = 18,
+    mols_n = 0,
+    temperatura_referencia = 298.15
+)
+C3H8_L = Propelente(
+    tipo = "Combustível",
+    nome = "Propano",
+    composicao = "C3H8",
+    estado = "Líquido",
+    massa_molar = 44.09562,
+    entalpia_formacao = -104680,
+    entalpia_t_referencia = -128228,
+    mols_c = 3,
+    mols_o =  0,
+    mols_h = 8,
+    mols_n = 0,
+    temperatura_referencia = 231.08
+)
+C2H8N2_L = Propelente(
+    tipo = "Combustível",
+    nome = "Dimetil-hidrazina Assimétrica",
+    composicao = "C2H8N2",
+    estado = "Líquido",
+    massa_molar = 60.09840,
+    entalpia_formacao = 48900.000,
+    entalpia_t_referencia = 48900,
+    mols_c = 2,
+    mols_o = 0,
+    mols_h = 8,
+    mols_n = 2,
+    temperatura_referencia = 298.15
+)
+NH3_L = Propelente(
+    tipo = "Combustível",
+    nome = "Amônia",
+    composicao = "NH3",
+    estado = "Líquido",
+    massa_molar = 17.03056,
+    entalpia_formacao = -45940,
+    entalpia_t_referencia = -71555,
+    mols_c = 0,
+    mols_o= 0,
+    mols_h = 3,
+    mols_n = 1,
+    temperatura_referencia = 239.72
+)
 
 
