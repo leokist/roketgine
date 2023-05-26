@@ -1,7 +1,7 @@
 
 from combustao import *
 
-razao_equiv="1"
+razao_equiv="1.5"
 
 #comb2 = Combustao(comb=c2h5oh_L, oxid=o2_L) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=c2h5oh_L, oxid=ar_G) #OK RE=1 | RE=?
@@ -13,13 +13,13 @@ razao_equiv="1"
 #comb2 = Combustao(comb=h2_L, oxid=h2o2_L) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=h2_L, oxid=hno3_L) #OK RE=1 | RE=?
 
-#comb2 = Combustao(comb=c8h18_L, oxid=o2_L) #OK RE=1 | RE=?
-#comb2 = Combustao(comb=c8h18_L, oxid=ar_G) #OK RE=1 | RE=?
-#comb2 = Combustao(comb=c8h18_L, oxid=h2o2_L) #OK RE=1 | RE=?
-#comb2 = Combustao(comb=c8h18_L, oxid=hno3_L) #OK RE=1 | RE=?
- 
+#comb2 = Combustao(comb=C8H18_L, oxid=o2_L) #OK RE=1 | RE=?
+comb2 = Combustao(comb=C8H18_L, oxid=Air_G) #OK RE=1 | RE=?
+#comb2 = Combustao(comb=C8H18_L, oxid=h2o2_L) #OK RE=1 | RE=?
+#comb2 = Combustao(comb=C8H18_L, oxid=hno3_L) #OK RE=1 | RE=?
+
 #comb2 = Combustao(comb=c3h8_L, oxid=o2_L) #OK RE=1 | RE=?
-comb2 = Combustao(comb=c3h8_L, oxid=ar_G) #OK RE=1 | RE=?
+#comb2 = Combustao(comb=c3h8_L, oxid=ar_G) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=c3h8_L, oxid=h2o2_L) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=c3h8_L, oxid=hno3_L) #OK RE=1 | RE=?
 
@@ -33,6 +33,14 @@ comb2 = Combustao(comb=c3h8_L, oxid=ar_G) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=nh3_L, oxid=h2o2_L) #OK RE=1 | RE=?
 #comb2 = Combustao(comb=nh3_L, oxid=hno3_L)  #OK RE=1 | RE=?
 
-comb2.reacao_combustao(float(razao_equiv))
+
+comb2.reacao_estequiometrica()
 print(comb2.reacao_estequiometrica_resultado)
-print(comb2.reacao_dissociacao_resultado)
+#print(comb2.reacao_dissociacao_resultado)
+
+comb2.temp_adiabatica()
+
+print(reacao_N2_para_2N.reacao())
+print(reacao_N2_para_2N.kp(423))
+
+
