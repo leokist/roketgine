@@ -18,7 +18,7 @@ def resultado():
     #oxid_temp = request.form['oxid_temp']
     
     reacao = Combustao(eval(comb), eval(oxid))
-    reacao.reacao_combustao(float(raz_eq))
+    reacao.reacao_estequiometrica(float(raz_eq))
 
     #return render_template('principal.html',
     #    resultado_estequiometrico=reacao.reacao_estequiometrica_resultado,
