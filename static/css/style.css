@@ -34,6 +34,9 @@ label {
 .texto3 {
     font-size: 16px;
 }
+.texto4 {
+    font-size: 14px;
+}
 
 .div_principal {
     display: flex;
