@@ -59,20 +59,7 @@ class ReacaoDissociacao():
 
         ln_kp = (-(self.mols_a*gibbs_a + self.mols_b*gibbs_b - self.mols_c*gibbs_c - self.mols_d*gibbs_d)/(Constantes.const_univ_gases()*self.temp))
         kp = e**ln_kp
-        if kp < 0.001:
-            kp = str(kp) + " Não ocorrerá a dissociação"
         return kp
-
-reacao_H2O_para_H_O = ReacaoDissociacao(
-    mols_a = 1,
-    reagente_a = H2O,
-    mols_b = 0,
-    reagente_b = "none",
-    mols_c = 1,
-    produto_c = H,
-    mols_d = 1,
-    produto_d = O,
-)
 
 reacao_N2_para_2N = ReacaoDissociacao(
     mols_a = 1,
@@ -96,6 +83,17 @@ reacao_N2_O2_para_2NO = ReacaoDissociacao(
     produto_d = "none",
 )
 
+reacao_H2O_para_2H_O = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = H2O,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 2,
+    produto_c = H,
+    mols_d = 1,
+    produto_d = O,
+)
+
 reacao_H2O_para_H2_05O2 = ReacaoDissociacao(
     mols_a = 1,
     reagente_a = H2O,
@@ -106,4 +104,70 @@ reacao_H2O_para_H2_05O2 = ReacaoDissociacao(
     mols_d = 0.5,
     produto_d = O2,
 )
-    
+
+reacao_H2O_para_OH_O = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = H2O,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 1,
+    produto_c = OH,
+    mols_d = 1,
+    produto_d = O,
+)
+
+reacao_OH_para_H_O = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = OH,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 1,
+    produto_c = H,
+    mols_d = 1,
+    produto_d = O,
+)
+
+reacao_H2_para_2H = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = H2,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 2,
+    produto_c = H,
+    mols_d = 0,
+    produto_d = "none",
+)
+
+reacao_O2_para_2O = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = O2,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 2,
+    produto_c = O,
+    mols_d = 0,
+    produto_d = "none",
+)
+
+reacao_CO2_para_CO_05O2 = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = CO2,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 1,
+    produto_c = CO,
+    mols_d = 0.5,
+    produto_d = O2,
+)
+
+reacao_CO2_para_CO_O = ReacaoDissociacao(
+    mols_a = 1,
+    reagente_a = CO2,
+    mols_b = 0,
+    reagente_b = "none",
+    mols_c = 1,
+    produto_c = CO,
+    mols_d = 1,
+    produto_d = O,
+)
+

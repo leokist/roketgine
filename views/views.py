@@ -4,7 +4,7 @@ from combustao import *
 
 @app.route('/')
 def index():
-    return render_template('principal.html', titulo="Rocketgine2")
+    return render_template('principal.html', titulo="Rocketgine")
 
 @app.route('/resultado', methods=["POST",])
 def resultado():
@@ -18,7 +18,7 @@ def resultado():
     #oxid_temp = request.form['oxid_temp']
     
     reacao = Combustao(eval(comb), eval(oxid))
-    reacao.reacao_estequiometrica(float(raz_eq))
+    reacao.reacao_estequiometrica()
 
     #return render_template('principal.html',
     #    resultado_estequiometrico=reacao.reacao_estequiometrica_resultado,
@@ -29,6 +29,7 @@ def resultado():
     if float(raz_eq) == 1:
         return render_template('principal.html',
             resultado_estequiometrico=reacao.reacao_estequiometrica_resultado,
+            resultado_temperatura_adiabatica=reacao.temp_adiabatica(),
             titulo="Rocketgine"
         )
     else:
