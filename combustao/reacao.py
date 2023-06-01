@@ -197,10 +197,17 @@ class Combustao():
         self.razao_mistura_estequiometrica = (self.n_oxid*self.oxid.massa_molar)/(self.n_comb*self.comb.massa_molar)
         
 
-    def temp_adiabatica(self):
+    def temp_adiabatica(self, tipo="estequiometrico"):
         """
         Temperatura adiabática de chama
         """
+
+        self.tipo = tipo
+
+        if self.tipo == "estequiometrico" and self.razao_equiv == 1:
+            produtos = self.produtos_estequiometrico
+        elif self.tipo == "dissociacao":
+            produtos = self.produtos_dissociacao
 
         # CALCULO ENTALPIA DOS REAGENTES
         # Como a temperatura do reagente utilizada para o cálculo da combustão
@@ -209,7 +216,6 @@ class Combustao():
         # Hr = n_comb * hf + n_oxid * hf 
         self.entalpia_reagentes = self.n_comb * self.comb.entalpia_formacao + self.n_oxid * self.oxid.entalpia_formacao
         #self.entalpia_reagentes = self.n_comb * (self.comb.entalpia_formacao + self.comb.entalpia(self.comb.temperatura_referencia) - self.comb.entalpia_referencia) + self.n_oxid * (self.oxid.entalpia_formacao + self.oxid.entalpia(self.oxid.temperatura_referencia) - self.oxid.entalpia_referencia)
-
 
         #if self.razao_equiv == 1:
         self.entalpia_produtos = 0
@@ -220,16 +226,16 @@ class Combustao():
         temp = 3100
         print("iniciando")
         while y < 30:
-            while x < len(self.produtos_estequiometrico):
-                prod = self.produtos_estequiometrico[x][0]
-                prod_mols = self.produtos_estequiometrico[x][1]
+            while x < len(produtos):
+                prod = produtos[x][0]
+                prod_mols = produtos[x][1]
                 self.entalpia_produtos += prod_mols * (prod.entalpia_formacao + prod.entalpia(temp) - prod.entalpia_t_referencia)
                 x += 1
             print(self.entalpia_produtos, self.entalpia_reagentes)
             #erro = 100*((abs(self.entalpia_produtos)-abs(self.entalpia_reagentes))/abs(self.entalpia_reagentes))
             erro = 100*((abs(self.entalpia_reagentes)-abs(self.entalpia_produtos))/abs(self.entalpia_produtos))
             #print("Hr:", self.entalpia_reagentes,"Hp:", self.entalpia_produtos, "Temp_Max:", temp_max,"Temp:", temp, "Temp_Min:", temp_min, "Erro:", erro)
-            #print("Hr:", self.entalpia_reagentes,"Hp:", self.entalpia_produtos, "Temp:", temp, erro)
+            print("Hr:", self.entalpia_reagentes,"Hp:", self.entalpia_produtos, "Temp:", temp, erro)
             if abs(erro) < 0.001:
                 print("------- Cálculo concluído -------")
                 print("Hr:", self.entalpia_reagentes,"Hp:", self.entalpia_produtos, "Erro:", erro, "Iterações:", y)
@@ -251,38 +257,62 @@ class Combustao():
         self.temperatura_adiabatica = temp
         return self.temperatura_adiabatica
 
-    def reacao_dissociacao(self, razao_equiv):
+    def reacao_dissociacao(self, razao_equiv, pressao):
         """
         REACAO COM DISSOCIACAO
         """        
-
+        self.pressao = pressao
         self.razao_equiv = razao_equiv
         self.razao_mistura = self.razao_mistura_estequiometrica / self.razao_equiv
         self.n_comb = (self.n_oxid * self.oxid.massa_molar) / (self.razao_mistura * self.comb.massa_molar)
 
         print("RME:",self.razao_mistura_estequiometrica,"RM:", self.razao_mistura, "n_comb:", self.n_comb)
 
-        "a*COMB + b+OXID ---> c*H2O + d*CO2 + e*N2 + f*CO + g*H2 + h*O2 + i*OH + j*O + k*H"
+        # Define os produtos de uma reação com dissociação
+        "a*COMB + b+OXID ---> c*CO2 + d*CO + e*H2O + f*OH + g*H2 + h*H + i*O2 + j*O + k*N2 + l*N"
+        if (self.comb.mols_c > 0 or self.oxid.mols_c > 0) and (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
+            self.produtos_dissociacao.append([CO2, 0])
+            self.produtos_dissociacao.append([CO, 0])
+        if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
+            self.produtos_dissociacao.append([H2O, 0])
+            self.produtos_dissociacao.append([OH, 0])
+        if (self.comb.mols_h > 0 or self.oxid.mols_h > 0):
+            self.produtos_dissociacao.append([H2, 0])
+            self.produtos_dissociacao.append([H, 0])
+        if (self.comb.mols_o > 0 or self.oxid.mols_o > 0):
+            self.produtos_dissociacao.append([O2, 0])
+            self.produtos_dissociacao.append([O, 0])
+        if (self.comb.mols_n > 0 or self.oxid.mols_n > 0):
+            self.produtos_dissociacao.append([N2, 0])
+            self.produtos_dissociacao.append([N, 0])
     
+        n_total = 0
         # Número de mols dos elementos
         if self.comb.mols_c > 0 or self.oxid.mols_c > 0:
-            n_c = self.n_comb*self.comb.mols_c + self.n_oxid*self.oxid.mols_c
-            n_total = n_c
-            print(f"Nc:{n_c}")
+            N_C_reagentes = self.n_comb*self.comb.mols_c + self.n_oxid*self.oxid.mols_c
+            N_total_reagentes = N_C_reagentes
+            #print(f"Nc:{N_C_reagentes}")
+        else:
+            N_C_reagentes = 0
         if self.comb.mols_o > 0 or self.oxid.mols_o > 0:
-            n_o = self.n_comb*self.comb.mols_o + self.n_oxid*self.oxid.mols_o
-            n_total += n_o
-            print(f"No:{n_o}")
+            N_O_reagentes = self.n_comb*self.comb.mols_o + self.n_oxid*self.oxid.mols_o
+            N_total_reagentes += N_O_reagentes
+            #print(f"No:{N_O_reagentes}")
+        else:
+            N_O_reagentes = 0
         if self.comb.mols_h > 0 or self.oxid.mols_h > 0:
-            n_h = self.n_comb*self.comb.mols_h + self.n_oxid*self.oxid.mols_h
-            n_total += n_h
-            print(f"Nh:{n_h}")
+            N_H_reagentes = self.n_comb*self.comb.mols_h + self.n_oxid*self.oxid.mols_h
+            N_total_reagentes += N_H_reagentes
+            #print(f"Nh:{N_H_reagentes}")
+        else:
+            N_H_reagentes = 0
         if self.comb.mols_n > 0 or self.oxid.mols_n > 0:
-            n_n = self.n_comb*self.comb.mols_n + self.n_oxid*self.oxid.mols_n
-            n_total += n_n
-            print(f"Nn:{n_n}")
-        print(f"Nc:{n_c/n_total} No:{n_o/n_total} Nh:{n_h/n_total}")
-
+            N_N_reagentes = self.n_comb*self.comb.mols_n + self.n_oxid*self.oxid.mols_n
+            N_total_reagentes += N_N_reagentes
+            #print(f"Nn:{N_N_reagentes}")
+        else:
+            N_N_reagentes = 0
+        
         # Calcula as constantes de dissociação
         if (self.comb.mols_o > 0 or self.oxid.mols_o > 0) and (self.comb.mols_c > 0 or self.oxid.mols_c > 0):
             # CO2 --> CO + O
@@ -314,77 +344,63 @@ class Combustao():
         #kp1 = reacao_CO2_para_CO_05O2.kp(self.temperatura_adiabatica)      
         #kp3 = reacao_H2O_para_H2_05O2.kp(self.temperatura_adiabatica)
         
-        y = 0.4422
-        p = 15
-        n_total = p/y
-        n_total_calc = n_total*2
-        N_o2 = 0.75
-        N_o2_sup = 1
-        N_o2_inf = 0
-        n_o_calc = 0.1
-        # print(erro)
-        i=0
-        erro_anterior = 99
-        N_o2_anterior = "?"
-        tentativa = 1
-        while i < 30:
-            
-            N_o = (kp5*N_o2/y)**0.5
+        p = self.pressao
+        y = p / N_total_reagentes
+        n_O2 = 0.001
+        n_CO2 = -1
+        n_CO = -1
+        n_H2O = -1
+        n_OH = -1
+        n_O = -1
+        n_H2 = -1
+        n_H = -1
+        n_N2 = -1
+        n_N = -1
+        iteracoes = 0
+        while (n_CO2<0 or n_CO<0 or n_H2O<0 or n_OH<0 or n_O2<0 or n_O<0 or n_H2<0 or n_H<0 or n_N2<0 or n_N<0):
+            n_O = (kp5*n_O2/y)**0.5
 
             if self.comb.mols_c > 0 or self.oxid.mols_c > 0:
-                N_CO2 = (n_c*kp5)/((kp1*N_o)+kp5)
-                N_co = n_c-N_CO2
+                n_CO2 = (N_C_reagentes*kp5)/((kp1*n_O)+kp5)
+                n_CO = N_C_reagentes-n_CO2
             else:
-                N_co = 0
-                N_CO2 = 0
+                n_CO = 0
+                n_CO2 = 0
 
-            N_H2O = (n_o-(2*N_CO2)-N_co-(2*N_o2)-N_o)/(((N_o*kp7)/(N_o2*kp5))+1)
-            N_oh = n_o-N_H2O-2*N_CO2-N_co-2*N_o2-N_o
-            N_h = (N_o*N_oh*kp3)/(N_o2*kp5)
-            N_h2 = (n_h-2*N_H2O-N_oh-N_h)/2
+            n_H2O = (N_O_reagentes-(2*n_CO2)-n_CO-(2*n_O2)-n_O)/(((n_O*kp7)/(n_O2*kp5))+1)
+            n_OH = N_O_reagentes-n_H2O-2*n_CO2-n_CO-2*n_O2-n_O
+            n_H = (n_O*n_OH*kp3)/(n_O2*kp5)
+            n_H2 = (N_H_reagentes-2*n_H2O-n_OH-n_H)/2
 
             if self.comb.mols_n > 0 or self.oxid.mols_n > 0:
-                N_n_a = (2*N_o2*kp5)/(kp6*N_o**2)
-                N_n_b = 1
-                N_n_c = -n_n
-                N_n = (-N_n_b+((N_n_b**2 - 4*N_n_a*N_n_c)**0.5))/(2*N_n_a)
+                n_N_a = (2*n_O2*kp5)/(kp6*n_O**2)
+                n_N_b = 1
+                n_N_c = -N_N_reagentes
+                n_N_r1 = (-n_N_b+((n_N_b**2 - 4*n_N_a*n_N_c)**0.5))/(2*n_N_a)
+                n_N_r2 = (-n_N_b-((n_N_b**2 - 4*n_N_a*n_N_c)**0.5))/(2*n_N_a)
+                if n_N_r1 > 0:
+                    n_N = n_N_r1
+                else:
+                    n_N = n_N_r2
 
-                N_N2 = ((N_o2*kp5)/(kp6*N_o**2))*N_n**2
+                n_N2 = ((n_O2*kp5)/(kp6*n_O**2))*n_N**2
             else:
-                N_n = 0
-                N_N2 = 0
+                n_N = 0
+                n_N2 = 0
 
-            n_total_calc = N_o2+N_o+N_CO2+N_co+N_h+N_h2+N_oh+N_H2O+N_n+N_N2
-            n_o_calc = 2*N_o2+N_o+2*N_CO2+N_co+N_oh+N_H2O
-            
-            erro = n_o/n_o_calc
-            print("tent: {:.2f} No_t:{:.4f}, No_t_c:{:.4f}, er: {:.4f}, No2_inf: {:.3f} No2: {:.3f} No2_sup: {:.3f}".format(tentativa, n_o, n_o_calc, erro, N_o2_inf, N_o2, N_o2_sup))            
-            if tentativa == 1:
-                erro_1 = erro
-                erro_2 = 0
-                N_o2_anterior = N_o2
-                if N_o2 == 0.75:
-                    N_o2 = 0.25
-                else:
-                    N_o2 = N_o2_inf+((N_o2_sup-N_o2_inf)/4)
-                tentativa+=1
-            elif tentativa == 2:
-                erro_2 = erro
-                if erro_1 < erro_2:
-                    N_o2_sup = N_o2_sup
-                    N_o2_inf = (N_o2_anterior+N_o2)/2
-                    N_o2 = N_o2_sup-((N_o2_sup-N_o2_inf)/4)
-                    tentativa = 1
-                else:
-                    N_o2_sup = (N_o2_sup+N_o2_inf)/2
-                    N_o2_inf = N_o2_inf
-                    N_o2 = N_o2_sup-((N_o2_sup-N_o2_inf)/4)
-                    tentativa = 1
-            i+=1
+            N_C_produtos = n_CO2 + n_CO
+            N_H_produtos = 2*n_H2O + n_OH + 2*n_H2 + n_H
+            N_O_produtos = n_H2O + 2*n_CO2 + n_CO + n_OH + 2*n_O2 + n_O
+            N_N_produtos = 2*n_N2 + n_N
+            N_total_produtos = N_C_produtos + N_H_produtos + N_O_produtos + N_N_produtos
+            iteracoes += 1
+            print(iteracoes, n_O2)
+            n_O2 += 0.001
         #print(f"n:{n_total}, N:{n_total_calc}, {(erro)}")
-        #print(f"o2: {N_o2/N_total}, o: {N_o/N_total}, CO2: {N_CO2/N_total}, co: {N_co/N_total}, h: {N_h/N_total}, h2: {N_h2/N_total}, oh: {N_oh/N_total}, H2O: {N_H2O/N_total}, n: {N_n/N_total}, N2: {N_N2/N_total} razao_mist: {razao_mistura}")
-        print(f"o2: {N_o2/n_total_calc}, o: {N_o/n_total_calc}, CO2: {N_CO2/n_total_calc}, co: {N_co/n_total_calc}, h: {N_h/n_total_calc}, h2: {N_h2/n_total_calc}, oh: {N_oh/n_total_calc}, H2O: {N_H2O/n_total_calc}, n: {N_n/n_total_calc}, N2: {N_N2/n_total_calc} razao_mist: {self.razao_mistura}")
-            
+        print(f" CO2: {n_CO2}, CO: {n_CO}, H2O: {n_H2O}, OH: {n_OH}, O2: {n_O2}, O: {n_O}, H2: {n_H2}, H: {n_H},   N2: {n_N2}, N: {n_N} razao_mist: {self.razao_mistura}")
+        #print(f"o2: {N_o2/n_total_calc}, o: {N_o/n_total_calc}, CO2: {N_CO2/n_total_calc}, co: {N_co/n_total_calc}, h: {N_h/n_total_calc}, h2: {N_h2/n_total_calc}, oh: {N_oh/n_total_calc}, H2O: {N_H2O/n_total_calc}, n: {N_n/n_total_calc}, N2: {N_N2/n_total_calc} razao_mist: {self.razao_mistura}")
+        print(f"Nc_r:{N_C_reagentes} No_r:{N_O_reagentes} Nh_r:{N_H_reagentes} Nn_r:{N_N_reagentes}")
+        print(f"Nc_p:{N_C_produtos} No_p:{N_O_produtos} Nh_p:{N_H_produtos} Nn_p:{N_N_produtos}")   
         
         
         
@@ -611,7 +627,7 @@ class Combustao():
             x = 0
             for i in self.produtos_estequiometrico:
 
-                reacao += f"%.3f + {self.produtos_estequiometrico[x][0]}" %(self.produtos_estequiometrico[x][1])
+                reacao += f"%.3f {self.produtos_estequiometrico[x][0]}" %(self.produtos_estequiometrico[x][1])
                 print(x)
                 if i is not self.produtos_estequiometrico[-1]:
                     reacao += " + "
