@@ -47,19 +47,19 @@ class Gas():
         self.__b1_temp_1000_6000 = b1
         self.__b2_temp_1000_6000 = b2
     
-    def coeficientes_6000_20000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
-        """Define os coeficientes de um gás entre as temperaturas de 1000°C a 6000°C"""
-        self.temp_max = temp_max
-        self.temp_min = temp_min
-        self.__a1_temp_6000_20000 = a1
-        self.__a2_temp_6000_20000 = a2
-        self.__a3_temp_6000_20000 = a3
-        self.__a4_temp_6000_20000 = a4
-        self.__a5_temp_6000_20000 = a5
-        self.__a6_temp_6000_20000 = a6
-        self.__a7_temp_6000_20000 = a7
-        self.__b1_temp_6000_20000 = b1
-        self.__b2_temp_6000_20000 = b2
+    #def coeficientes_6000_20000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
+    #    """Define os coeficientes de um gás entre as temperaturas de 1000°C a 6000°C"""
+    #    self.temp_max = temp_max
+    #    self.temp_min = temp_min
+    #    self.__a1_temp_6000_20000 = a1
+    #    self.__a2_temp_6000_20000 = a2
+    #    self.__a3_temp_6000_20000 = a3
+    #    self.__a4_temp_6000_20000 = a4
+    #    self.__a5_temp_6000_20000 = a5
+    #    self.__a6_temp_6000_20000 = a6
+    #    self.__a7_temp_6000_20000 = a7
+    #    self.__b1_temp_6000_20000 = b1
+    #    self.__b2_temp_6000_20000 = b2
 
     def __coeficiente(self, temperatura):
         """Define qual coeficiente será utilizado com base no valor da temperatura informada"""
@@ -86,6 +86,16 @@ class Gas():
             self.b1 = self.__b1_temp_1000_6000
             self.b2 = self.__b2_temp_1000_6000
 
+        #elif t >= 6000 and t <= 20000:
+        #    self.a1 = self.__a1_temp_6000_20000
+        #    self.a2 = self.__a2_temp_6000_20000
+        #    self.a3 = self.__a3_temp_6000_20000
+        #    self.a4 = self.__a4_temp_6000_20000
+        #    self.a5 = self.__a5_temp_6000_20000
+        #    self.a6 = self.__a6_temp_6000_20000
+        #    self.a7 = self.__a7_temp_6000_20000
+        #    self.b1 = self.__b1_temp_6000_20000
+        #    self.b2 = self.__b2_temp_6000_20000
 
     def entropia(self, temperatura):
         """Executa o cálculo da Entropia gás a uma determinada temperatura [J/molK]"""
@@ -101,7 +111,7 @@ class Gas():
         self.temperatura = temperatura
         t = self.temperatura
         self.__coeficiente(t)
-        self.h = Constantes.const_univ_gases()*t*((-self.a1/(t**2))+((self.a2*log(t))/t)+self.a3+((self.a4*t)/2)+((self.a5*(t**2))/3)+((self.a6*(t**3))/4)+((self.a7*(t**4))/5)+(self.b1/t))
+        self.h = Constantes.const_univ_gases()*t*((-self.a1/(t**2))+(self.a2*log(t)/t)+self.a3+(self.a4*t/2)+(self.a5*(t**2)/3)+(self.a6*(t**3)/4)+(self.a7*(t**4)/5)+(self.b1/t))
         #print(f"entalpia: { self.composicao} {self.h}")
         return self.h
 
@@ -280,3 +290,15 @@ CO2.coeficientes_1000_6000(6000, 1000, 1.17696242E+05, -1.78879148E+03, 8.291523
 N2.coeficientes_1000_6000(6000, 1000, 5.877124060E+05, -2.239249073E+03, 6.066949220E+00, -6.139685500E-04, 1.491806679E-07, -1.923105485E-11, 1.061954386E-15, 1.283210415E+04, -1.586640027E+01)
 N.coeficientes_1000_6000(6000, 1000, 8.876501380E+04, -1.071231500E+02, 2.362188287E+00, 2.916720081E-04, -1.729515100E-07, 4.012657880E-11, -2.677227571E-15, 5.697351330E+04, 4.865231506E+00)
 NO.coeficientes_1000_6000(6000, 1000, 2.239018716E+05, -1.289651623E+03, 5.433936030E+00, -3.656034900E-04, 9.880966450E-08, -1.416076856E-11, 9.380184620E-16, 1.750317656E+04, -8.501669090E+00)              
+
+#H.coeficientes_6000_20000(20000, 6000, )
+#H2.coeficientes_6000_20000(20000, 6000, )
+#H2O.coeficientes_6000_20000(20000, 6000, )
+#O.coeficientes_6000_20000(20000, 6000, )
+#O2.coeficientes_6000_20000(20000, 6000, )
+#OH.coeficientes_6000_20000(20000, 6000, )
+#CO.coeficientes_6000_20000(20000, 6000, 8.868662960E+08, -7.500377840E+05, 2.495474979E+02, -3.956351100E-02, 3.297772080E-06,-1.318409933E-10, 1.998937948E-15, 5.701421130E+06, -2.060704786E+03)
+#CO2.coeficientes_6000_20000(20000, 6000, -1.544423287E+09, 1.016847056E+06, -2.561405230E+02, 3.369401080E-02, -2.181184337E-06, 6.991420840E-11, -8.842351500E-16, -8.043214510E+06, 2.254177493E+03)
+#N2.coeficientes_6000_20000(20000, 6000, )
+#N.coeficientes_6000_20000(20000, 6000, )
+#NO.coeficientes_6000_20000(20000, 6000, )              

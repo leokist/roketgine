@@ -33,11 +33,14 @@ comb2 = Combustao(comb=C2H5OH_L, oxid=O2_L) #OK RE=1 | RE=?
 
 
 comb2.reacao_estequiometrica()
-print(comb2.reacao_estequiometrica_resultado)
-#print(comb2.reacao_dissociacao_resultado)
+
+comb2.reacao_dissociacao_resultado
 
 comb2.temp_adiabatica()
 comb2.reacao_dissociacao(1.5, 15)
+
+
+
 
 print(reacao_N2_para_2N.reacao())
 print(reacao_N2_para_2N.kp(423))

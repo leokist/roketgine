@@ -59,6 +59,8 @@ class ReacaoDissociacao():
 
         ln_kp = (-(self.mols_a*gibbs_a + self.mols_b*gibbs_b - self.mols_c*gibbs_c - self.mols_d*gibbs_d)/(Constantes.const_univ_gases()*self.temp))
         kp = e**ln_kp
+        if kp < 0.001:
+            kp = 0.0001
         return kp
 
 reacao_N2_para_2N = ReacaoDissociacao(

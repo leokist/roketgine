@@ -45,7 +45,7 @@
     <p class="texto1">Pressões</p>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="pressao_camara">Câmara Combustão[atm]</label>
-      <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="15" required>
+      <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="{{ request.form['pressao_camara'] }}" required>
     </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="pressao_externa">Ambiente[atm]</label>
@@ -57,7 +57,11 @@
     <p class="texto1">Dados do Motor</p>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="comp_caract">Comp Característico[m]</label>
-      <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.50" value="15" required>
+      <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.10" value="{{ request.form['comp_caract'] }}" required>
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_dados_entrada" for="forca_empuxo">Força de Empuxo[N]</label>
+      <input type="number" id="forca_empuxo" name="forca_empuxo" class="input_number" step="1" value="{{ request.form['forca_empuxo'] }}" required>
     </div>
     <p class="texto2">Injetores</p>
     <div class="container_input">
