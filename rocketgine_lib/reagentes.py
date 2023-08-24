@@ -20,6 +20,25 @@ class Propelente:
     def __repr__(self):
         return self.composicao
 
+
+    @property
+    def propelente_nome(self):
+        return self.nome
+    
+    @property
+    def propelente_composicao(self):
+        return self.composicao
+    
+    @property
+    def propelente_estado(self):
+        return self.estado
+    
+    @property
+    def propelente_massa_molar(self):
+        propelente_massa_molar = f"{self.massa_molar : .3f}"
+        return propelente_massa_molar 
+    
+
 """
 Dados obtidos de:
 NASA Glenn coefficients for calculating thermodynamic properties of individual species.

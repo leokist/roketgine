@@ -1,7 +1,44 @@
 .div_resultado {
     display: inline-block;
     width: 90%;
+    min-width: 735px;
     height: 90vh;
-    border: 1px solid black;
+    border: 1px solid #353535;
     border-radius: 10px;
+    background-color: #242424;
+}
+
+.div_resultado_combustao {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.div_resultado_escoamento_compressivel {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.div_resultado_parametros_performance {
+    display: inline-block;
+    vertical-align: top;
+}
+
+table {
+    background-color: #353535;
+    border-radius: 0px 0px 5px 5px;
+    margin: 5px;
+    padding: 5px;
+}
+
+td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+caption {
+    background-color: #353535;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 1px solid #242424;
+    margin: 5px 0px 0px 0px;
+    padding: 5px 0px 5px 0px;
 }

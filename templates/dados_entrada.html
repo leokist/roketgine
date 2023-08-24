@@ -1,7 +1,13 @@
 <form class="formDadosEntrada" action="{{ url_for('resultado') }}" method="post"> 
+  <div>
+    <h1 class="titulo">Rocketgine</h1>
+  </div>
+  
   <div class="formDadosEntrada_prop">
-    <p class="texto1">Propelentes</p>
-    <div class="container_input">
+    <div class="formDadosEntrada_titulo">
+      <p class="texto1">Propelentes</p>
+    </div>
+    <div class="container_input container_input_comb">
       <label class="texto3 label_prop" for="comb">Combustível</label>
       <select class="select_dados_entrada" name="comb" id="comb" value="{{ request.form['comb'] }}">
         <option value="C2H5OH_L">Etanol [C2H5OH_L]</option>
@@ -11,12 +17,13 @@
         <option value="C2H8N2_L">Dimetil-hidrazina Assimétrica [C2H8N2_L]</option>
         <option value="NH3_L">Amônia [NH3_L]</option>
       </select>
+      <div class="container_input">
+        <label class="texto3 label_dados_entrada" for="comb_temp">Temperatura [°C]</label>
+        <input type="number" id="comb_temp" name="comb_temp" class="input_number" step="1.00" value="25" required>
+      </div>
     </div>
-    <div class="container_input">
-      <label class="texto3 label_dados_entrada" for="comb_temp">Temperatura [°C]</label>
-      <input type="number" id="comb_temp" name="comb_temp" class="input_number" step="1.00" value="25" required>
-    </div>
-    <div class="container_input">
+    
+    <div class="container_input container_input_oxid">
       <label class="texto3 label_prop" for="oxid">Oxidante</label>
       <select class="select_dados_entrada" name="oxid" id="oxid" value="{{ request.form['oxid'] }}">
         <option value="O2_L ">Oxigênio Líquido [O2_L]</option>
@@ -24,11 +31,12 @@
         <option value="H2O2_L">Peroxido de Hidrogênio [H2O2_L]</option>
         <option value="HNO3_L">Ácido Nítrico [HNO3_L]</option>
       </select>
+      <div class="container_input">
+        <label class="texto3 label_dados_entrada" for="oxid_temp">Temperatura [°C]</label>
+        <input type="number" id="oxid_temp" name="oxid_temp" class="input_number" step="1.00" value="25" required>
+      </div>
     </div>
-    <div class="container_input">
-      <label class="texto3 label_dados_entrada" for="oxid_temp">Temperatura [°C]</label>
-      <input type="number" id="oxid_temp" name="oxid_temp" class="input_number" step="1.00" value="25" required>
-    </div>
+    
     <div class="container_input">
       <label class="texto3 label_dados_entrada label_raz_eq " for="raz_eq" onclick="msgRazEq()">Razão de Equivalência</label>
       <input type="number" id="raz_eq" name="raz_eq" class="input_number" value="{{ request.form['raz_eq'] }}" step="0.01" min="0.00" required>
@@ -38,11 +46,13 @@
       <p>Re > 1 : Reação Rica em Combustível</p>
       <p>Re < 1 : Reação Pobre em Combustível</p>
     </div>
-    
+
   </div>
 
   <div class="formDadosEntrada_pressoes">
-    <p class="texto1">Pressões</p>
+    <div class="formDadosEntrada_titulo">
+      <p class="texto1">Pressões</p>
+    </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="pressao_camara">Câmara Combustão[atm]</label>
       <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="{{ request.form['pressao_camara'] }}" required>
@@ -54,7 +64,9 @@
   </div>
 
   <div class="formDadosEntrada_motor">
-    <p class="texto1">Dados do Motor</p>
+    <div class="formDadosEntrada_titulo">
+      <p class="texto1">Dados do Motor</p>
+    </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="comp_caract">Comp Característico[m]</label>
       <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.10" value="{{ request.form['comp_caract'] }}" required>

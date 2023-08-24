@@ -1,11 +1,126 @@
 <div class="div_resultado">
     <h1>{{ resultado_combustao }}</h1>
-    <h2>Temperatura Adiabatica de Chama:</h2>
-    <h2>{{ resultado_temperatura_adiabatica }}</h2>
-    <h2>Razao de mistura:</h2>
-    <h2>{{ resultado_razao_mistura }}</h2>
-    <h2>Entalpia dos Reagentes:</h2>
-    <h2>{{ resultado_entalpia_reag }}</h2>
-    <h2>Entalpia dos Produtos:</h2>
-    <h2>{{ resultado_entalpia_prod }}</h2>
+    <div class="div_resultado_combustao">
+        <table>
+            <caption>Propelentes</caption>
+            <tr>
+                <th></th>
+                <th>Nome</th>
+                <th>Composição</th>
+                <th>Estado</th>
+                <th>Qtd[kmol]</th>
+                <th>Massa Molar[kg/kmol]</th>
+            </tr>
+            <tr>
+                <td>Combustível</td>
+                <td>{{ resultado_comb_nome }}</td>
+                <td>{{ resultado_comb_composicao }}</td>
+                <td>{{ resultado_comb_estado }}</td>
+                <td>{{ resultado_comb_mols }}</td>
+                <td>{{ resultado_comb_massa_molar }}</td>
+            </tr>
+            <tr>
+                <td>Oxidante</td>
+                <td>{{ resultado_oxid_nome }}</td>
+                <td>{{ resultado_oxid_composicao }}</td>
+                <td>{{ resultado_oxid_estado }}</td>
+                <td>{{ resultado_oxid_mols }}</td>
+                <td>{{ resultado_oxid_massa_molar }}</td>
+            </tr>
+            <tr>
+                <td>Razão de Equivalência</td>
+                <td>{{ resultado_razao_equiv }}</td>
+            </tr>
+            <tr>
+                <td>Razão de Mistura O/C</td>
+                <td>{{ resultado_razao_mistura }}</td>
+            </tr>
+        </table>
+        <table>
+            <caption>Produtos da Combustão</caption>
+            <tr>
+                <td>Elemento</td>
+                {% for i in range(0, len) %}   
+                    <td>{{ produtos_elementos[i][0] }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Fracao Molar</td>
+                {% for i in range(0, len) %}   
+                    <td>{{ produtos_elementos[i][1] }}</td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    <div class="div_resultado_escoamento_compressivel">
+        <table>
+            <caption>Propriedades Termodinâmicas</caption>
+            <tr>
+                <th>Propriedade</th>
+                <th>Unidade</th>
+                <th>Ponto 1</th>
+                <th>Garganta</th>
+                <th>Ponto 2</th>
+            </tr>
+            <tr>
+                <td>Temperatura</td>
+                <td>[K]</td>
+                <td>{{ resultado_t_1 }}</td>
+                <td>{{ resultado_t_g }}</td>
+                <td>{{ resultado_t_2 }}</td>
+            </tr>
+            <tr>
+                <td>Pressão</td>
+                <td>[Pa]</td>
+                <td>{{ resultado_p_1 }}</td>
+                <td>{{ resultado_p_g }}</td>
+                <td>{{ resultado_p_2 }}</td>
+            </tr>
+            <tr>
+                <td>Velocidade</td>
+                <td>[m/s]</td>
+                <td>{{ resultado_v_1 }}</td>
+                <td>{{ resultado_v_g }}</td>
+                <td>{{ resultado_v_2 }}</td>
+            </tr>
+            <tr>
+                <td>Velocidade do Som</td>
+                <td>[m/s]</td>
+                <td>{{ resultado_a_1 }}</td>
+                <td>{{ resultado_a_g }}</td>
+                <td>{{ resultado_a_2 }}</td>
+            </tr>
+            <tr>
+                <td>Múmero de Mach</td>
+                <td>[-]</td>
+                <td>{{ resultado_mach_1 }}</td>
+                <td>{{ resultado_mach_g }}</td>
+                <td>{{ resultado_mach_2 }}</td>
+            </tr>
+            <tr>
+                <td>Volume Específico</td>
+                <td>[m³/kg]</td>
+                <td>{{ resultado_vol_esp_1 }}</td>
+                <td>{{ resultado_vol_esp_g }}</td>
+                <td>{{ resultado_vol_esp_2 }}</td>
+            </tr>
+            <tr>
+                <td>Massa Especifica</td>
+                <td>[kg/m³]</td>
+                <td>{{ resultado_massa_esp_1 }}</td>
+                <td>{{ resultado_massa_esp_g }}</td>
+                <td>{{ resultado_massa_esp_2 }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="div_resultado_parametros_performance">
+        <table>
+            <caption>Parâmetros de Performance</caption>
+            <tr>
+                <th>Parâmetro</th>
+                <th>Unidade</th>
+                <th>Valor</th>
+            </tr>
+        </table>
+    </div>
 </div>
