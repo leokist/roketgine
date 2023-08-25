@@ -1,5 +1,6 @@
 @import url("dados_entrada.css");
 @import url("resultado.css");
+@import url("home.css");
 
 :root {
     --fonte: 'Ubuntu Mono';
@@ -20,6 +21,7 @@ label {
     font-size: 32px;
     text-align: center;
     margin: none;
+    color: #b9712d;
 }
 
 .texto1 {

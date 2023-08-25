@@ -4,11 +4,11 @@ from rocketgine_lib import *
 
 @app.route('/')
 def index():
-    return render_template('principal.html', titulo="Rocketgine")
+    return render_template('principal.html', rota = "/")
 
 @app.route('/resultado', methods=["POST",])
 def resultado():
-
+    
     """ Sem utilizar o WTForms:"""
     # request pega a informação da tag que contém o atributo nome definido
     raz_eq = request.form['raz_eq']
@@ -32,6 +32,7 @@ def resultado():
         #motor = CamaraCombustao(forca_empuxo, comp_caract, pressao_camara, pressao_ambiente)
         
         return render_template('principal.html',
+            rota = "/resultado",
             resultado_combustao = motor.combustao_resultado,
             resultado_comb_nome = comb.propelente_nome,
             resultado_comb_composicao = comb.propelente_composicao,

@@ -1,0 +1,12 @@
+.div_home {
+    display: flex;
+    width: 90%;
+    min-width: 735px;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.home_logo {
+    opacity: 0.5;
+}

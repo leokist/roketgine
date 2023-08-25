@@ -1,9 +1,12 @@
 <body>
-    <h1 class="titulo">{{ titulo }}</h1>
     <div class="div_principal">
         {% include "head.html" %}
             {% include "dados_entrada.html" %}
-            {% include "resultado.html" %}
+            {% if rota == "/resultado" %}
+                {% include "resultado.html" %}
+            {% else %}
+                {% include "home.html" %}
+            {% endif %}
         {% include "footer.html" %}
     </div>
 </body>
