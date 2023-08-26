@@ -2,15 +2,44 @@
     display: inline-block;
     width: 90%;
     min-width: 735px;
-    height: 90vh;
+    height: 95vh;
     border: 1px solid #353535;
     border-radius: 10px;
     background-color: #242424;
     
 }
 
-.div_resultado_combustao {
+.div_resultado_camara_combustao_bocal {
     display: inline-block;
+    width: 900px;
+    border-right: 1px solid #353535;
+    height: 95vh;
+}
+
+.div_resultado_injetores {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.div_titulo_resultado {
+    height: 24px;
+}
+
+.div_resultado_geometria {
+    display: block;
+}
+
+.img_geometria {
+    display: inline;
+    width: 600px;
+    height: 330px;
+    border-radius: 5px;
+    margin: 5px 0px 0px 5px;
+    background-color: #353535;
+}
+
+.div_resultado_combustao {
+    display: block;
     vertical-align: top;
 }
 
@@ -24,22 +53,100 @@
     vertical-align: top;
 }
 
-table {
+.tabela {
     background-color: #353535;
     border-radius: 0px 0px 5px 5px;
     margin: 5px;
     padding: 5px;
 }
 
-td {
-    padding-left: 5px;
-    padding-right: 5px;
+.tabela_resultado_geometria {
+    display: inline-block;
+    background-color: #353535;
+    vertical-align: top;
+    height: 330px;
+    border-radius: 5px;
+    margin: 5px 5px 0px 0px;
+    padding: 0px 5px 0px 5px;
 }
 
-caption {
+.tabela_propelentes {
+    width: 775px;
+}
+
+.tabela_produtos {
+
+}
+
+.tabela_resultado_escoamento_compressivel {
+    background-color: #353535;
+    border-radius: 0px 0px 5px 5px;
+    margin: 0px 0px 0px 5px;
+    padding: 5px;
+}
+
+.tabela_resultado_parametros_performance {
+    background-color: #353535;
+    border-radius: 0px 0px 5px 5px;
+    margin: 0px 5px 0px 0px;
+    padding: 5px;
+}
+
+td { 
+    padding-left: 5px;
+    padding-right: 5px;
+    width: fit-content;
+}
+
+.tabela_titulo {
     background-color: #353535;
     border-radius: 5px 5px 0px 0px;
     border-bottom: 1px solid #242424;
     margin: 5px 0px 0px 0px;
     padding: 5px 0px 5px 0px;
+}
+
+.tabela_titulo_geometria {
+    border-bottom: 1px solid #242424;
+    padding: 5px 0px 5px 0px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tr_tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tr_tooltip:hover {
+    color: #b9712d;
+    cursor: pointer;
 }

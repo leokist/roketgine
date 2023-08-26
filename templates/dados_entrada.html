@@ -9,7 +9,7 @@
       <p class="texto1">Propelentes</p>
     </div>
     <div class="container_input container_input_comb">
-      <label class="texto3 label_prop" for="comb">Combustível</label>
+      <label class="texto3 label_select" for="comb">Combustível</label>
       <select class="select_dados_entrada" name="comb" id="comb" value="{{ request.form['comb'] }}">
         <option value="C2H5OH_L">Etanol [C2H5OH_L]</option>
         <option value="H2_L">Hidrogênio [H2_L]</option>
@@ -25,7 +25,7 @@
     </div>
     
     <div class="container_input container_input_oxid">
-      <label class="texto3 label_prop" for="oxid">Oxidante</label>
+      <label class="texto3 label_select" for="oxid">Oxidante</label>
       <select class="select_dados_entrada" name="oxid" id="oxid" value="{{ request.form['oxid'] }}">
         <option value="O2_L ">Oxigênio Líquido [O2_L]</option>
         <option value="Air_G">Ar [O2+3,76N2]</option>
@@ -75,6 +75,14 @@
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="forca_empuxo">Força de Empuxo[N]</label>
       <input type="number" id="forca_empuxo" name="forca_empuxo" class="input_number" step="1" value="{{ request.form['forca_empuxo'] }}" required>
+    </div>
+    <div class="container_input">
+      <label class="texto3 label_select" for="tipo_bocal">Tipo de Bocal</label>
+      <select class="select_dados_entrada" name="tipo_bocal" id="tipo_bocal" value="{{ request.form['tipo_bocal'] }}">
+        <option value="conico">Cônico</option>
+        <option value="sino_60">Contorno de Sino 60%</option>
+        <option value="sino_80">Contorno de Sino 80%</option>
+      </select>
     </div>
     <p class="texto2">Injetores</p>
     <div class="container_input">

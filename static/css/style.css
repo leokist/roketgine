@@ -24,6 +24,14 @@ label {
     color: #b9712d;
 }
 
+.titulo_resultado {
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+    margin: none;
+    color: #b9712d;
+}
+
 .texto1 {
     font-size: 16px;
     font-weight: bold;
