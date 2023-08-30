@@ -17,29 +17,29 @@
                     <td class="tooltip">L*
                         <span class="tooltiptext">Comprimento Característico</span>
                     </td>
-                    <td>{{ resultado_l_estrela }}</td>
+                    <td class="td_valor">{{ resultado_l_estrela }}</td>
                     <td>[m]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">V
                         <span class="tooltiptext">Volume Total da Câmara de Combustão e Bocal</span>
                     </td>
-                    <td>{{ resultado_volume_total }}</td>
+                    <td class="td_valor">{{ resultado_volume_total }}</td>
                     <td>[m³]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">LC
                         <span class="tooltiptext">Comprimento da Câmara de Combustão</span>
                     </td>
-                    <td>{{ resultado_lc }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_lc }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">LG
                         <span class="tooltiptext">Comprimento da parte Convergente da Garganta</span>
                     </td>
-                    <td>{{ resultado_lg }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_lg }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip"> 
@@ -54,7 +54,7 @@
                         {% endif %}
                         <span class="tooltiptext">Comprimento da Divergente do Bocal</span>
                     </td>
-                    <td>
+                    <td class="td_valor">
                         {% if tipo_bocal == "conico"%}
                             {{ resultado_l }}
                         {% endif %}
@@ -65,63 +65,63 @@
                             {{ resultado_l_80 }}
                         {% endif %}
                     </td>
-                    <td>[m]</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">R1
                         <span class="tooltiptext">Raio da Câmara de Combustão</span>
                     </td>
-                    <td>{{ resultado_r1 }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_r1 }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">RG
                         <span class="tooltiptext">Raio da Garganta</span>
                     </td>
-                    <td>{{ resultado_rg }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_rg }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">R2
                         <span class="tooltiptext">Raio da Saída do Bocal</span>
                     </td>
-                    <td>{{ resultado_r2 }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_r2 }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">R3
                         <span class="tooltiptext">Raio da Saída da Câmara de Combustão</span>
                     </td>
-                    <td>{{ resultado_r3 }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_r3 }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">R4
                         <span class="tooltiptext">Raio de Entrada da Garganta</span>
                     </td>
-                    <td>{{ resultado_r4 }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_r4 }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">R5
                         <span class="tooltiptext">Raio de Saida da Garganta</span>
                     </td>
-                    <td>{{ resultado_r5 }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_r5 }}</td>
+                    <td>[mm]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">X°
                         <span class="tooltiptext">Ângulo de Entrada do Contorno de Sino</span>
                     </td>
-                    <td>{{ resultado_angulo_x }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_angulo_x }}</td>
+                    <td>[-]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">Y°
                         <span class="tooltiptext">Ângulo de Saída do Contorno de Sino</span>
                     </td>
-                    <td>{{ resultado_angulo_y }}</td>
-                    <td>[m]</td>
+                    <td class="td_valor">{{ resultado_angulo_y }}</td>
+                    <td>[-]</td>
                 </tr>
             </table>
         </div>
@@ -141,24 +141,24 @@
                     <td>{{ resultado_comb_nome }}</td>
                     <td>{{ resultado_comb_composicao }}</td>
                     <td>{{ resultado_comb_estado }}</td>
-                    <td>{{ resultado_comb_mols }}</td>
-                    <td>{{ resultado_comb_massa_molar }}</td>
+                    <td class="td_valor">{{ resultado_comb_mols }}</td>
+                    <td class="td_valor">{{ resultado_comb_massa_molar }}</td>
                 </tr>
                 <tr>
                     <td>Oxidante</td>
                     <td>{{ resultado_oxid_nome }}</td>
                     <td>{{ resultado_oxid_composicao }}</td>
                     <td>{{ resultado_oxid_estado }}</td>
-                    <td>{{ resultado_oxid_mols }}</td>
-                    <td>{{ resultado_oxid_massa_molar }}</td>
+                    <td class="td_valor">{{ resultado_oxid_mols }}</td>
+                    <td class="td_valor">{{ resultado_oxid_massa_molar }}</td>
                 </tr>
                 <tr>
                     <td>Razão de Equivalência</td>
-                    <td>{{ resultado_razao_equiv }}</td>
+                    <td class="td_valor">{{ resultado_razao_equiv }}</td>
                 </tr>
                 <tr>
                     <td>Razão de Mistura O/C</td>
-                    <td>{{ resultado_razao_mistura }}</td>
+                    <td class="td_valor">{{ resultado_razao_mistura }}</td>
                 </tr>
             </table>
             <table class="tabela tabela_produtos">
@@ -172,7 +172,7 @@
                 <tr>
                     <td>Fracao Molar</td>
                     {% for i in range(0, len) %}   
-                        <td>{{ produtos_elementos[i][1] }}</td>
+                        <td  class="td_valor">{{ produtos_elementos[i][1] }}</td>
                     {% endfor %}
                 </tr>
             </table>
@@ -182,58 +182,58 @@
                 <caption class="tabela_titulo">Propriedades Termodinâmicas</caption>
                 <tr>
                     <th>Propriedade</th>
-                    <th>Ponto 1</th>
+                    <th>Câmara Comb.</th>
                     <th>Garganta</th>
-                    <th>Ponto 2</th>
+                    <th>Saída Bocal</th>
                     <th>Und</th>
                 </tr>
                 <tr>
                     <td>Temperatura</td>
-                    <td>{{ resultado_t_1 }}</td>
-                    <td>{{ resultado_t_g }}</td>
-                    <td>{{ resultado_t_2 }}</td>
+                    <td class="td_valor">{{ resultado_t_1 }}</td>
+                    <td class="td_valor">{{ resultado_t_g }}</td>
+                    <td class="td_valor">{{ resultado_t_2 }}</td>
                     <td>[K]</td>
                 </tr>
                 <tr>
                     <td>Pressão</td>
-                    <td>{{ resultado_p_1 }}</td>
-                    <td>{{ resultado_p_g }}</td>
-                    <td>{{ resultado_p_2 }}</td>
-                    <td>[Pa]</td>
+                    <td class="td_valor">{{ resultado_p_1 }}</td>
+                    <td class="td_valor">{{ resultado_p_g }}</td>
+                    <td class="td_valor">{{ resultado_p_2 }}</td>
+                    <td>[kPa]</td>
                 </tr>
                 <tr>
                     <td>Velocidade</td>
-                    <td>{{ resultado_v_1 }}</td>
-                    <td>{{ resultado_v_g }}</td>
-                    <td>{{ resultado_v_2 }}</td>
+                    <td class="td_valor">{{ resultado_v_1 }}</td>
+                    <td class="td_valor">{{ resultado_v_g }}</td>
+                    <td class="td_valor">{{ resultado_v_2 }}</td>
                     <td>[m/s]</td>
                 </tr>
                 <tr>
                     <td>Velocidade do Som</td>
-                    <td>{{ resultado_a_1 }}</td>
-                    <td>{{ resultado_a_g }}</td>
-                    <td>{{ resultado_a_2 }}</td>
+                    <td class="td_valor">{{ resultado_a_1 }}</td>
+                    <td class="td_valor">{{ resultado_a_g }}</td>
+                    <td class="td_valor">{{ resultado_a_2 }}</td>
                     <td>[m/s]</td>
                 </tr>
                 <tr>
                     <td>Múmero de Mach</td>
-                    <td>{{ resultado_mach_1 }}</td>
-                    <td>{{ resultado_mach_g }}</td>
-                    <td>{{ resultado_mach_2 }}</td>
+                    <td class="td_valor">{{ resultado_mach_1 }}</td>
+                    <td class="td_valor">{{ resultado_mach_g }}</td>
+                    <td class="td_valor">{{ resultado_mach_2 }}</td>
                     <td>[-]</td>
                 </tr>
                 <tr>
                     <td>Volume Específico</td>
-                    <td>{{ resultado_vol_esp_1 }}</td>
-                    <td>{{ resultado_vol_esp_g }}</td>
-                    <td>{{ resultado_vol_esp_2 }}</td>
+                    <td class="td_valor">{{ resultado_vol_esp_1 }}</td>
+                    <td class="td_valor">{{ resultado_vol_esp_g }}</td>
+                    <td class="td_valor">{{ resultado_vol_esp_2 }}</td>
                     <td>[m³/kg]</td>
                 </tr>
                 <tr>
                     <td>Massa Especifica</td>
-                    <td>{{ resultado_massa_esp_1 }}</td>
-                    <td>{{ resultado_massa_esp_g }}</td>
-                    <td>{{ resultado_massa_esp_2 }}</td>
+                    <td class="td_valor">{{ resultado_massa_esp_1 }}</td>
+                    <td class="td_valor">{{ resultado_massa_esp_g }}</td>
+                    <td class="td_valor">{{ resultado_massa_esp_2 }}</td>
                     <td>[kg/m³]</td>
                 </tr>
             </table>
@@ -247,52 +247,52 @@
                     <th>Und</th> 
                 </tr>
                 <tr class="tr_tooltip">
-                    <td class="tooltip">E
+                    <td class="tooltip">RE
                         <span class="tooltiptext">Razão de Expansão</span>
                     </td>
-                    <td>{{ resultado_razao_expansao }}</td>
-                    <td>[?]</td>
+                    <td class="td_valor">{{ resultado_razao_expansao }}</td>
+                    <td>[-]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">Cf
                         <span class="tooltiptext">Coeficiente de Empuxo</span>
                     </td>
-                    <td>{{ resultado_coeficiente_empuxo }}</td>
+                    <td class="td_valor">{{ resultado_coeficiente_empuxo }}</td>
                     <td>[-]</td>
                 </tr>
                 <tr class="tr_tooltip">
-                    <td class="tooltip">Ec
+                    <td class="tooltip">RC
                         <span class="tooltiptext">Razão de Contração</span>
                     </td>
-                    <td>{{ resultado_razao_contracao }}</td>
-                    <td>[?]</td>
+                    <td class="td_valor">{{ resultado_razao_contracao }}</td>
+                    <td>[-]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">m total
                         <span class="tooltiptext">Vazão Mássica Total dos Propelentes</span>
                     </td>
-                    <td>{{ resultado_vazao_massica_total_propelentes }}</td>
+                    <td class="td_valor">{{ resultado_vazao_massica_total_propelentes }}</td>
                     <td>[kg/s]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">Is
                         <span class="tooltiptext">Impulso Específico</span>
                     </td>
-                    <td>{{ resultado_impulso_especifico }}</td>
+                    <td class="td_valor">{{ resultado_impulso_especifico }}</td>
                     <td>[s]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">c
                         <span class="tooltiptext">Velocidade Efetiva de Exaustão</span>
                     </td>
-                    <td>{{ resultado_velocidade_efetiva_exaustao }}</td>
+                    <td class="td_valor">{{ resultado_velocidade_efetiva_exaustao }}</td>
                     <td>[m/s]</td>
                 </tr>
                 <tr class="tr_tooltip">
                     <td class="tooltip">c*
                         <span class="tooltiptext">Velocidade Característica</span>
                     </td>
-                    <td>{{ resultado_velocidade_caracteristica }}</td>
+                    <td class="td_valor">{{ resultado_velocidade_caracteristica }}</td>
                     <td>[m/s]</td>
                 </tr>
             </table>
@@ -302,5 +302,79 @@
         <div class="div_titulo_resultado">
             <h1 class="titulo_resultado">Injetores</h1>
         </div>
+        <div class="div_resultado_injetores_geometria">
+            <table class="tabela_resultado_injetores">
+                <caption class="tabela_titulo">Furos de Injeção</caption>
+                <tr>
+                    <th> </th>
+                    <th>{{ resultado_comb_composicao }}</th>
+                    <th>{{ resultado_oxid_composicao }}</th>
+                    <th>Und</th> 
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">m total
+                        <span class="tooltiptext">Vazão Mássica Total</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_vazao_massica_comb }}</td>
+                    <td class="td_valor">{{ resultado_vazao_massica_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">Q total
+                        <span class="tooltiptext">Vazão Total</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_vazao_comb }}</td>
+                    <td class="td_valor">{{ resultado_vazao_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">A total
+                        <span class="tooltiptext">Área total de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_area_total_comb }}</td>
+                    <td class="td_valor">{{ resultado_area_total_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">A furo
+                        <span class="tooltiptext">Área de 1 furo de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_area_injetor_comb }}</td>
+                    <td class="td_valor">{{ resultado_area_injetor_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">D furo
+                        <span class="tooltiptext">Diâmetro 1 furo de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_diametro_injetor_comb }}</td>
+                    <td class="td_valor">{{ resultado_diametro_injetor_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">Q furo
+                        <span class="tooltiptext">Vazão em 1 furo de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_vazao_injetor_comb }}</td>
+                    <td class="td_valor">{{ resultado_vazao_injetor_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">V furo
+                        <span class="tooltiptext">Velocidade no 1 furo de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_v_injetor_comb }}</td>
+                    <td class="td_valor">{{ resultado_v_injetor_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+                <tr class="tr_tooltip">
+                    <td class="tooltip">n° furos
+                        <span class="tooltiptext">Quantidade de furos de injeção</span>
+                    </td>
+                    <td class="td_valor">{{ resultado_numero_injetores_comb }}</td>
+                    <td class="td_valor">{{ resultado_numero_injetores_oxid }}</td>
+                    <td>[?]</td>
+                </tr>
+            </table>
     </div>
 </div>
