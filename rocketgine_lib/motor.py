@@ -9,6 +9,7 @@ class Motor():
         self._oxid = oxid
         self._razao_equiv = razao_equiv 
         self._pressao = pressao  * Constantes.pressao_atmosferica()                 # Converte a pressão de [atm] para [pa]
+        self._pressao_atm = pressao
         self._pressao_externa = pressao_externa * Constantes.pressao_atmosferica()  # Converte a pressão de [atm] para [pa]
         self._propelentes = [comb, oxid]
         self._forca_empuxo = forca_empuxo
@@ -284,6 +285,7 @@ class Motor():
         """
         self._k_estequiometrico = self._cp_medio_estequiometrico / self._cv_estequiometrico
 
+
     """
     #
     # Combustão Com Dissociação
@@ -353,15 +355,15 @@ class Motor():
 
             if (self._comb.mols_h > 0 or self._oxid.mols_h > 0):
                 # H2 --> 2 H
-                kp4 = reacao_H2_para_2H.kp(temp)
+                kp4 = reacao_H2_para_2H.kp(20000)
 
             if (self._comb.mols_o > 0 or self._oxid.mols_o > 0):
                 # O2 --> 2 O
-                kp5 = reacao_O2_para_2O.kp(temp)
+                kp5 = reacao_O2_para_2O.kp(20000)
 
             if (self._comb.mols_n > 0 or self._oxid.mols_n > 0):
                 # N2 --> 2 N 
-                kp6 = reacao_N2_para_2N.kp(temp)
+                kp6 = reacao_N2_para_2N.kp(20000)
 
             
             #print(f"kp1: {kp1: .3f},kp2: {kp2: .3f},kp3: {kp3: .3f},kp4: {kp4: .3f},kp5: {kp5: .3f},kp6: {kp6: .3f}")
@@ -507,6 +509,275 @@ class Motor():
         """
         self._k_dissociacao = self._cp_medio_dissociacao / self._cv_dissociacao
 
+    def reacao_dissociacao_V3(self):
+        """
+        REACAO COM DISSOCIACAO
+        """        
+        self._razao_mistura_dissociacao = self._razao_mistura_estequiometrica / self._razao_equiv
+        self._n_comb_dissociacao = (self._n_oxid * self._oxid.massa_molar) / (self._razao_mistura_dissociacao * self._comb.massa_molar)
+        self._produtos_dissociacao = []
+        P = self._pressao_atm
+
+        # Fracao Molar dos Reagentes
+        N_total_reagentes = self._n_comb_dissociacao + self._n_oxid
+        x_comb = self._n_comb_dissociacao / N_total_reagentes
+        x_oxid = self._n_oxid / N_total_reagentes
+
+        # Número de mols dos elementos dos Reagentes
+        if self._comb.mols_c > 0 or self._oxid.mols_c > 0:
+            X_C_reagentes = x_comb*self._comb.mols_c + x_oxid*self._oxid.mols_c
+        else:
+            X_C_reagentes = 0
+        if self._comb.mols_o > 0 or self._oxid.mols_o > 0:
+            X_O_reagentes = x_comb*self._comb.mols_o + x_oxid*self._oxid.mols_o
+        else:
+            X_O_reagentes = 0
+        if self._comb.mols_h > 0 or self._oxid.mols_h > 0:
+            X_H_reagentes = x_comb*self._comb.mols_h + x_oxid*self._oxid.mols_h
+        else:
+            X_H_reagentes = 0
+        if self._comb.mols_n > 0 or self._oxid.mols_n > 0:
+            X_N_reagentes = x_comb*self._comb.mols_n + x_oxid*self._oxid.mols_n
+        else:
+            X_N_reagentes = 0
+        print(X_N_reagentes, x_comb*self._comb.mols_n, x_oxid*self._oxid.mols_n)
+     
+  
+        # CALCULO ENTALPIA DOS REAGENTES
+        # Como a temperatura do reagente utilizada para o cálculo da combustão
+        # será igual a temperatura de referência, teremos:
+        # Hr = n_comb (hf + h - h(ref)) + n_oxid (hf + h - h(ref))
+        # Hr = n_comb * hf + n_oxid * hf 
+        self._entalpia_reagentes_dissociacao = x_comb * self._comb.entalpia_formacao + x_oxid * self._oxid.entalpia_formacao
+
+        
+        temp_min = 200
+        temp_max = 6000
+        temp = 3100
+        erro = 1
+        zz = 0
+        while erro > 0.01 and zz <= 20:
+            self._produtos_dissociacao.clear()
+            # Calcula as constantes de dissociação
+            if (self._comb.mols_o > 0 or self._oxid.mols_o > 0) and (self._comb.mols_c > 0 or self._oxid.mols_c > 0):
+                # 2CO2 --> 2CO + O2
+                kp1 = reacao_2CO2_para_2CO_O2.kp(temp)
+            if (self._comb.mols_o > 0 or self._oxid.mols_o > 0) and (self._comb.mols_h > 0 or self._oxid.mols_h > 0):
+                # H2O --> H + OH
+                kp2 = reacao_H2O_para_H_OH.kp(temp)
+                # OH --> H + O
+                kp3 = reacao_OH_para_H_O.kp(temp)
+            if (self._comb.mols_h > 0 or self._oxid.mols_h > 0):
+                # H2 --> 2H
+                kp4 = reacao_H2_para_2H.kp(20000)
+            if (self._comb.mols_o > 0 or self._oxid.mols_o > 0):
+                # O2 --> 2O
+                kp5 = reacao_O2_para_2O.kp(20000)
+            if (self._comb.mols_n > 0 or self._oxid.mols_n > 0):
+                # N2 --> 2 N 
+                kp6 = reacao_N2_para_2N.kp(20000)
+            
+            #print(f"kp1: {kp1: .3f},kp2: {kp2: .3f},kp3: {kp3: .3f},kp4: {kp4: .3f},kp5: {kp5: .3f}, kp6: {kp6: .3f}")
+            
+            x_O2_max = 1
+            x_O2_min = 0
+            x_O2 = 0.5
+            erro2 = 100
+            kk = 0
+            while erro2 > 0.01 and kk <= 20:
+                p_total = 0
+                x_O = (kp5*x_O2/P)**0.5
+
+                # Calculo de x_CO e x_CO2
+                if self._comb.mols_c > 0 or self._oxid.mols_c > 0:
+                    x_CO = (X_C_reagentes * (kp1/(x_O2*P))**0.5) / (1 + ((kp1/(x_O2*P))**0.5))
+                    x_CO2 = X_C_reagentes - x_CO
+                else:
+                    x_CO = 0
+                    x_CO2 = 0
+
+                # Calculo do x_H por bascara
+                a_x_H = ((x_O * (P**2)) / kp3) / kp2
+                b_x_H = (x_O * P) / kp3
+                c_x_H = 2*x_CO2 + x_CO + 2*x_O2 + x_O - X_O_reagentes
+                delta_H = (b_x_H**2) - (4 * a_x_H * c_x_H)
+                if delta_H < 0:
+                    x_H = 0
+                else:
+                    x_H_1 = (-1 * b_x_H + (delta_H)**0.5) / ( 2 * a_x_H)
+                    x_H_2 = (-1 * b_x_H - (delta_H)**0.5) / ( 2 * a_x_H)
+                    if x_H_1 > 0:
+                        x_H = x_H_1
+                    else:               
+                        x_H = x_H_2
+            
+                # Calculo de x_H2, x_OH e x_H2O
+                x_H2 = ((x_H**2) * P)/ kp4
+                x_OH = (x_H * x_O * P) / kp3
+                x_H2O = (x_H * x_OH * P) / kp2
+
+                # Calculo do x_N por bascara
+                if self._comb.mols_n > 0 or self._oxid.mols_n > 0:
+                    a_x_N = (2 * P) / kp6
+                    b_x_N = 1
+                    c_x_N = - X_N_reagentes
+                    delta_N = (b_x_N**2) - (4 * a_x_N * c_x_N)
+                    if delta_N < 0:
+                        x_N = 0
+                    else:
+                        x_N_1 = (-1 * b_x_N + (delta_N)**0.5) / ( 2 * a_x_N)
+                        x_N_2 = (-1 * b_x_N - (delta_N)**0.5) / ( 2 * a_x_N)
+                        if x_N_1 > 0:
+                            x_N = x_N_1
+                        else:
+                            x_N = x_N_2
+                                    
+                    # Calculo de n_N2
+                    x_N2 = ((x_N**2) * P) / kp6
+                else:
+                    x_N = 0
+                    x_N2 = 0
+                
+
+                X_C_produtos = x_CO2 + x_CO
+                X_H_produtos = 2*x_H2O + x_OH + 2*x_H2 + x_H
+                X_O_produtos = x_H2O + 2*x_CO2 + x_CO + x_OH + 2*x_O2 + x_O
+                X_N_produtos = 2*x_N2 + x_N
+                N_total_produtos = x_CO2 + x_CO + x_H2O + x_OH + x_H2 + x_H + x_O2 + x_O + x_N2 + x_N
+                
+                # Calculo da Pressao Total
+                P_total = x_CO2*P + x_CO*P + x_H2O*P + x_OH*P + x_H2*P + x_H*P + x_O2*P + x_O*P + x_N2*P + x_N*P
+
+                # Erro entre as pressões
+                erro2 = 100 * abs((P_total - P)/P)
+                #print(kk, "x_O2_min", f"{x_O2_min : .3f}","x_O2", f"{x_O2 : .3f}","x_O2_max", f"{x_O2_max : .3f}",  "p_total", f"{P_total : .3f}", "p", P, "erro", f"{erro2 : .3f}")
+                
+                # Definição do novo valor de x_O2
+                #if erro2 > 0.01:
+                #    x_O2 -= 0.001
+                if P_total > P:
+                    x_O2_max = x_O2
+                    x_O2_min = x_O2_min
+                    x_O2 = (x_O2_max + x_O2_min)/2
+                else:
+                    x_O2_max = x_O2_max
+                    x_O2_min = x_O2
+                    x_O2 = (x_O2_max + x_O2_min)/2
+                kk += 1
+            #print(X_N_reagentes, delta_N, x_N, x_N2, kp6, erro2)    
+
+            #print(kk, "x_O2_min", f"{x_O2_min : .3f}","x_O2", f"{x_O2 : .3f}","x_O2_max", f"{x_O2_max : .3f}",  "p_total", f"{P_total : .3f}", "p", P, "erro", f"{erro2 : .3f}")
+
+
+            # Define os produtos de uma reação com dissociação
+            "a*COMB + b+OXID ---> c*CO2 + d*CO + e*H2O + f*OH + g*H2 + h*H + i*O2 + j*O + k*N2 + l*N"
+            if (self._comb.mols_c > 0 or self._oxid.mols_c > 0) and (self._comb.mols_o > 0 or self._oxid.mols_o > 0):
+                self._produtos_dissociacao.append([CO2, x_CO2])
+                self._produtos_dissociacao.append([CO, x_CO])
+            if (self._comb.mols_o > 0 or self._oxid.mols_o > 0) and (self._comb.mols_h > 0 or self._oxid.mols_h > 0):
+                self._produtos_dissociacao.append([H2O, x_H2O])
+                self._produtos_dissociacao.append([OH, x_OH])
+            if (self._comb.mols_h > 0 or self._oxid.mols_h > 0):
+                self._produtos_dissociacao.append([H2, x_H2])
+                self._produtos_dissociacao.append([H, x_H])
+            if (self._comb.mols_o > 0 or self._oxid.mols_o > 0):
+                self._produtos_dissociacao.append([O2, x_O2])
+                self._produtos_dissociacao.append([O, x_O])
+            if (self._comb.mols_n > 0 or self._oxid.mols_n > 0):
+                self._produtos_dissociacao.append([N2, x_N2])
+                self._produtos_dissociacao.append([N, x_N])
+
+            #print(self._produtos_dissociacao)
+            entalpia_produtos = 0
+            x = 0
+            while x < len(self._produtos_dissociacao):
+                prod = self._produtos_dissociacao[x][0]
+                prod_mols = self._produtos_dissociacao[x][1]
+                #print(prod, prod.entalpia(temp))
+                entalpia_produtos += prod_mols * (prod.entalpia(temp))
+                x += 1
+            
+            erro = 100 * abs((entalpia_produtos - self._entalpia_reagentes_dissociacao) / self._entalpia_reagentes_dissociacao)
+            #print("temp_min:", f"{temp_min : .3f}", "temp:", f"{temp : .3f}","temp_max:", f"{temp_max : .3f}",entalpia_produtos > self._entalpia_reagentes_dissociacao, "H_r ", f"{self._entalpia_reagentes_dissociacao : .3f}", "H_p ", f"{entalpia_produtos : .3f}", "erro ", f"{erro : .3f}", "p_calc", f"{P_total : .3f}")
+
+            # Definição do novo valor de temperatura
+            if erro > 0.01:
+                if entalpia_produtos > self._entalpia_reagentes_dissociacao :
+                    temp_max = temp
+                    temp_min = temp_min
+                    temp = (temp_max + temp_min)/2
+                else:
+                    temp_max = temp_max
+                    temp_min = temp
+                    temp = (temp_max + temp_min)/2
+            zz+=1
+
+        print(kk, "x_O2_min", f"{x_O2_min : .3f}","x_O2", f"{x_O2 : .3f}","x_O2_max", f"{x_O2_max : .3f}",  "p_total", f"{P_total : .3f}", "p", P, "erro", f"{erro2 : .3f}")
+        #print(f"kp1: {kp1: .3f},kp2: {kp2: .3f},kp3: {kp3: .3f},kp4: {kp4: .3f},kp5: {kp5: .3f}, kp6: {kp6: .3f}")
+        print("x_O2:",f"{x_O2: .4f} ","x_O:",f"{x_O : .4f} ","x_CO2:",f"{x_CO2 : .4f} ","x_CO:",f"{x_CO : .4f} ","x_H2O:",f"{x_H2O : .4f} ","x_OH:",f"{x_OH : .4f} ","x_H2:",f"{x_H2 : .4f} ","x_H:",f"{x_H : .4f} ","x_N2:",f"{x_N2 : .4f} ","x_N:",f"{x_N : .4f}",)
+        print(zz, "temp_min:", f"{temp_min : .3f}", "temp:", f"{temp : .3f}","temp_max:", f"{temp_max : .3f}",entalpia_produtos > self._entalpia_reagentes_dissociacao, "H_r ", f"{self._entalpia_reagentes_dissociacao : .3f}", "H_p ", f"{entalpia_produtos : .3f}", "erro ", f"{erro : .3f}", "p_calc", f"{P_total : .3f}")
+        
+
+        self._entalpia_produtos_dissociacao = entalpia_produtos
+        self._temperatura_adiabatica_dissociacao = temp
+        self._erro_dissociacao = erro2
+        self._erro_temperatura = erro
+
+        """
+        # Massa Molar Média
+        """
+        self._massa_molar_media_dissociacao = 0
+        self._total_mols_produto_dissociacao = 0
+        x = 0
+        for i in self._produtos_dissociacao:
+            self._total_mols_produto_dissociacao += self._produtos_dissociacao[x][1]
+            x += 1
+        x = 0
+        for i in self._produtos_dissociacao:
+            produto = self._produtos_dissociacao[x][0]
+            self._massa_molar_media_dissociacao += (self._produtos_dissociacao[x][1] / self._total_mols_produto_dissociacao) * produto.massa_molar
+            x += 1
+        
+        #print("MMMD", self._massa_molar_media_dissociacao, "TMD", self._total_mols_produto_dissociacao)
+        
+        """
+        # Calor Específico a Pressão Constante
+        """
+        self._cp_medio_dissociacao = 0
+        x = 0
+        for i in self._produtos_dissociacao:
+            produto = self._produtos_dissociacao[x][0]
+            self._cp_medio_dissociacao += (self._produtos_dissociacao[x][1] / self._total_mols_produto_dissociacao) * produto.calor_especifico(self._temperatura_adiabatica_dissociacao)
+            x += 1
+        self._cp_medio_dissociacao = self._cp_medio_dissociacao / self._massa_molar_media_dissociacao
+
+        """
+        # Constante dos Gases
+        """
+        self._constante_gases_dissociacao = Constantes.const_univ_gases() / self._massa_molar_media_dissociacao
+
+        """
+        # Calor Específico a Volume Constante
+        """
+        self._cv_dissociacao = self._cp_medio_dissociacao - self._constante_gases_dissociacao
+
+        """
+        # Razão dos Calores Específicos
+        """
+        self._k_dissociacao = self._cp_medio_dissociacao / self._cv_dissociacao
+
+
+    @property
+    def status_reacao(self):
+        if self._razao_equiv == 1:
+            status = "ok"
+        else:
+            if self._erro_dissociacao > 0.01 or self._erro_temperatura > 0.01:
+                status = "erro"
+            else:
+                status = "ok"
+        return status
+
     @property
     def combustao_resultado(self):
         """Exibe o resultado da reação de combustão com o número de mols de cada elemento"""
@@ -551,10 +822,17 @@ class Motor():
     @property
     def reacao_produtos(self):
         """ Retorna uma lista com os produtos da reação de combustao [[PROD, MOLS], ...] """
+        x = 0
+        reacao_produtos = []
         if self._razao_equiv == 1:
-            reacao_produtos = self._produtos_estequiometrico
+            dados_produtos = self._produtos_estequiometrico
         else:
-            reacao_produtos = self._produtos_dissociacao
+            dados_produtos = self._produtos_dissociacao           
+        while x < len(dados_produtos):
+            elemento = dados_produtos[x][0]
+            valor = f"{ dados_produtos[x][1] : .5f}"
+            reacao_produtos.append([elemento, valor])
+            x += 1
         return reacao_produtos
 
     @property
@@ -646,7 +924,10 @@ class Motor():
     def escoamento_compressivel(self):        
         #Ponto 1 - Camara de Combustão
         self._v_1 = 0                                                    # Velocidade no ponto 1 [m/s]
-        self._t_1 = self._temperatura_adiabatica_estequiometrica         # Temperatura no ponto 1 [K]
+        if self.razao_equiv == 1:
+            self._t_1 = self._temperatura_adiabatica_estequiometrica     # Temperatura no ponto 1 [K]
+        else:
+            self._t_1 = self._temperatura_adiabatica_dissociacao
         self._p_1 = self._pressao                                        # Pressao no ponto 1 [Pa]
         self._a_1 = (self.k * self.constante_gases * self._t_1)**(1/2)   # Velocidade do Som no ponto 1 [m/s]
         self._mach_1 = self._v_1 / self._a_1                             # Número de Mach no ponto 1 [-]
@@ -1023,14 +1304,14 @@ class Motor():
     #
     """
     def injetores(self):
-        self._vazao_massica_oxid = (self.razao_mistura * self._vazao_massica_total_propelente) / (self.razao_mistura + 1)
-        self._vazao_massica_comb = self._vazao_massica_total_propelente / (self.razao_mistura + 1)                          
-        self._queda_pressao_oxid = 0.25 * self._p_1                                                                         
-        self._queda_pressao_comb = 0.25 * self._p_1                                                                         
+        self._vazao_massica_oxid = (self.razao_mistura * self._vazao_massica_total_propelente) / (self.razao_mistura + 1)   # [kg/s]
+        self._vazao_massica_comb = self._vazao_massica_total_propelente / (self.razao_mistura + 1)                          # [kg/s]
+        self._queda_pressao_oxid = 0.25 * self._p_1       # [Pa]                                                                  
+        self._queda_pressao_comb = 0.25 * self._p_1       # [Pa]                                                               
         self._coeficiente_descarga_comb = 0.8                                                                               
         self._coeficiente_descarga_oxid = 0.8
 
-        self._area_total_injetor_oxid = self._vazao_massica_oxid/(self._coeficiente_descarga_oxid*(2*self._oxid.massa_especifica*self._queda_pressao_oxid)**(1/2))
+        self._area_total_injetor_oxid = self._vazao_massica_oxid/(self._coeficiente_descarga_oxid*(2*self._oxid.massa_especifica*self._queda_pressao_oxid)**(1/2)) # [???]
         self._vazao_total_oxid = self._vazao_massica_oxid / self._oxid.massa_especifica
 
         self._area_total_injetor_comb = self._vazao_massica_comb/(self._coeficiente_descarga_comb*(2*self._comb.massa_especifica*self._queda_pressao_comb)**(1/2))
@@ -1065,6 +1346,7 @@ class Motor():
     # Propriedade Injetores Oxidante
     @property
     def vazao_massica_oxid(self):
+        """ Vazão Mássica de Oxidante [kg/s]"""
         vazao_massica_oxid= f"{self._vazao_massica_oxid : .3f}"
         return vazao_massica_oxid
 
@@ -1102,6 +1384,7 @@ class Motor():
     # Propriedades Injetores de Combustivel
     @property
     def vazao_massica_comb(self):
+        """ Vazão Mássica de Combustível [kg/s]"""
         vazao_massica_comb= f"{self._vazao_massica_comb : .3f}"
         return vazao_massica_comb
 
@@ -1135,5 +1418,24 @@ class Motor():
         v_injetor_comb = f"{self._v_injetor_comb : .3f}"
         return v_injetor_comb
         
-        
-        
+
+
+
+"""
+class Combustion():
+    def __init__(self, comb, oxid, razao_equiv, pressao):
+        self._comb = comb
+        self._oxid = oxid
+        self._razao_equiv = razao_equiv 
+        self._pressao = pressao  * Constantes.pressao_atmosferica()                 # Converte a pressão de [atm] para [pa]
+        self._pressao_atm = pressao
+
+
+class Engine(Combustion):
+    def __init__(self, comb, oxid, razao_equiv, pressao, pressao_externa, forca_empuxo, comprimento_caracteristico):
+        super().__init__(comb, oxid, razao_equiv, pressao)
+        self._pressao_externa = pressao_externa * Constantes.pressao_atmosferica()  # Converte a pressão de [atm] para [pa]
+        self._propelentes = [comb, oxid]
+        self._forca_empuxo = forca_empuxo
+        self._comprimento_característico = comprimento_caracteristico
+"""

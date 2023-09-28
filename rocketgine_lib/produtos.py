@@ -20,7 +20,7 @@ class Gas():
         return f"{self.composicao}"
         
     def coeficientes_200_1000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
-        """Define os coeficientes de um gás entre as temperaturas de 200°C a 1000°C"""
+        """Define os coeficientes de um gás entre as temperaturas de 200K a 1000K"""
         self.temp_max = temp_max
         self.temp_min = temp_min
         self.__a1_temp_200_1000 = a1
@@ -34,7 +34,7 @@ class Gas():
         self.__b2_temp_200_1000 = b2
     
     def coeficientes_1000_6000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
-        """Define os coeficientes de um gás entre as temperaturas de 1000°C a 6000°C"""
+        """Define os coeficientes de um gás entre as temperaturas de 1000K a 6000K"""
         self.temp_max = temp_max
         self.temp_min = temp_min
         self.__a1_temp_1000_6000 = a1
@@ -47,19 +47,19 @@ class Gas():
         self.__b1_temp_1000_6000 = b1
         self.__b2_temp_1000_6000 = b2
     
-    #def coeficientes_6000_20000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
-    #    """Define os coeficientes de um gás entre as temperaturas de 1000°C a 6000°C"""
-    #    self.temp_max = temp_max
-    #    self.temp_min = temp_min
-    #    self.__a1_temp_6000_20000 = a1
-    #    self.__a2_temp_6000_20000 = a2
-    #    self.__a3_temp_6000_20000 = a3
-    #    self.__a4_temp_6000_20000 = a4
-    #    self.__a5_temp_6000_20000 = a5
-    #    self.__a6_temp_6000_20000 = a6
-    #    self.__a7_temp_6000_20000 = a7
-    #    self.__b1_temp_6000_20000 = b1
-    #    self.__b2_temp_6000_20000 = b2
+    def coeficientes_6000_20000(self, temp_max, temp_min, a1, a2, a3, a4, a5, a6, a7, b1, b2):
+        """Define os coeficientes de um gás entre as temperaturas de 6000K a 20000K"""
+        self.temp_max = temp_max
+        self.temp_min = temp_min
+        self.__a1_temp_6000_20000 = a1
+        self.__a2_temp_6000_20000 = a2
+        self.__a3_temp_6000_20000 = a3
+        self.__a4_temp_6000_20000 = a4
+        self.__a5_temp_6000_20000 = a5
+        self.__a6_temp_6000_20000 = a6
+        self.__a7_temp_6000_20000 = a7
+        self.__b1_temp_6000_20000 = b1
+        self.__b2_temp_6000_20000 = b2
 
     def __coeficiente(self, temperatura):
         """Define qual coeficiente será utilizado com base no valor da temperatura informada"""
@@ -86,16 +86,16 @@ class Gas():
             self.b1 = self.__b1_temp_1000_6000
             self.b2 = self.__b2_temp_1000_6000
 
-        #elif t >= 6000 and t <= 20000:
-        #    self.a1 = self.__a1_temp_6000_20000
-        #    self.a2 = self.__a2_temp_6000_20000
-        #    self.a3 = self.__a3_temp_6000_20000
-        #    self.a4 = self.__a4_temp_6000_20000
-        #    self.a5 = self.__a5_temp_6000_20000
-        #    self.a6 = self.__a6_temp_6000_20000
-        #    self.a7 = self.__a7_temp_6000_20000
-        #    self.b1 = self.__b1_temp_6000_20000
-        #    self.b2 = self.__b2_temp_6000_20000
+        elif t >= 6000 and t <= 20000:
+            self.a1 = self.__a1_temp_6000_20000
+            self.a2 = self.__a2_temp_6000_20000
+            self.a3 = self.__a3_temp_6000_20000
+            self.a4 = self.__a4_temp_6000_20000
+            self.a5 = self.__a5_temp_6000_20000
+            self.a6 = self.__a6_temp_6000_20000
+            self.a7 = self.__a7_temp_6000_20000
+            self.b1 = self.__b1_temp_6000_20000
+            self.b2 = self.__b2_temp_6000_20000
 
     def entropia(self, temperatura):
         """Executa o cálculo da Entropia gás a uma determinada temperatura [J/molK]"""
@@ -129,12 +129,10 @@ class Gas():
         """Executa o cálculo da Função de Gibbs [J/mol]"""
         self.temperatura = temperatura
         t = temperatura
-        hf = self.entalpia_formacao
-        href = self.entalpia_t_referencia
         h = self.entalpia(t)
         s = self.entropia(t)
-        self.gibbs = hf + h - href - (t * s)
-        #print(f"{self.composicao} href:{href}, hf:{hf}, h:{h}, s:{s}, gibbs:{self.gibbs}")
+        self.gibbs = h - (t * s)
+        #print(f"{self.composicao} h_298:{h_298}, hf:{hf}, h:{h}, s:{s}, gibbs:{self.gibbs}")
         return self.gibbs
 
 """
@@ -291,14 +289,14 @@ N2.coeficientes_1000_6000(6000, 1000, 5.877124060E+05, -2.239249073E+03, 6.06694
 N.coeficientes_1000_6000(6000, 1000, 8.876501380E+04, -1.071231500E+02, 2.362188287E+00, 2.916720081E-04, -1.729515100E-07, 4.012657880E-11, -2.677227571E-15, 5.697351330E+04, 4.865231506E+00)
 NO.coeficientes_1000_6000(6000, 1000, 2.239018716E+05, -1.289651623E+03, 5.433936030E+00, -3.656034900E-04, 9.880966450E-08, -1.416076856E-11, 9.380184620E-16, 1.750317656E+04, -8.501669090E+00)              
 
-#H.coeficientes_6000_20000(20000, 6000, )
-#H2.coeficientes_6000_20000(20000, 6000, )
-#H2O.coeficientes_6000_20000(20000, 6000, )
-#O.coeficientes_6000_20000(20000, 6000, )
-#O2.coeficientes_6000_20000(20000, 6000, )
-#OH.coeficientes_6000_20000(20000, 6000, )
-#CO.coeficientes_6000_20000(20000, 6000, 8.868662960E+08, -7.500377840E+05, 2.495474979E+02, -3.956351100E-02, 3.297772080E-06,-1.318409933E-10, 1.998937948E-15, 5.701421130E+06, -2.060704786E+03)
-#CO2.coeficientes_6000_20000(20000, 6000, -1.544423287E+09, 1.016847056E+06, -2.561405230E+02, 3.369401080E-02, -2.181184337E-06, 6.991420840E-11, -8.842351500E-16, -8.043214510E+06, 2.254177493E+03)
-#N2.coeficientes_6000_20000(20000, 6000, )
-#N.coeficientes_6000_20000(20000, 6000, )
-#NO.coeficientes_6000_20000(20000, 6000, )              
+H.coeficientes_6000_20000(20000, 6000, 2.173757694E+08, -1.312035403E+05, 3.399174200E+01,-3.813999680E-03, 2.432854837E-07, -7.694275540E-12, 9.644105630E-17, 1.067638086E+06, -2.742301051E+02)
+H2.coeficientes_6000_20000(20000, 6000, 4.966884120E+08, -3.147547149E+05, 7.984121880E+01, -8.414789210E-03, 4.753248350E-07, -1.371873492E-11, 1.605461756E-16, 2.488433516E+06, -6.695728110E+02)
+H2O.coeficientes_6000_20000(20000, 6000, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+O.coeficientes_6000_20000(20000, 6000, 1.779004264E+08, -1.082328257E+05, 2.810778365E+01, -2.975232262E-03, 1.854997534E-07, -5.796231540E-12, 7.191720164E-17, 8.890942630E+05, -2.181728151E+02)
+O2.coeficientes_6000_20000(20000, 6000, 4.975294300E+08,-2.866106874E+05, 6.690352250E+01, -6.169959020E-03, 3.016396027E-07, -7.421416600E-12, 7.278175770E-17, 2.293554027E+06, -5.530621610E+02)
+OH.coeficientes_6000_20000(20000, 6000, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+CO.coeficientes_6000_20000(20000, 6000, 8.868662960E+08, -7.500377840E+05, 2.495474979E+02, -3.956351100E-02, 3.297772080E-06,-1.318409933E-10, 1.998937948E-15, 5.701421130E+06, -2.060704786E+03)
+CO2.coeficientes_6000_20000(20000, 6000, -1.544423287E+09, 1.016847056E+06, -2.561405230E+02, 3.369401080E-02, -2.181184337E-06, 6.991420840E-11, -8.842351500E-16, -8.043214510E+06, 2.254177493E+03)
+N2.coeficientes_6000_20000(20000, 6000, 8.310139160E+08, -6.420733540E+05, 2.020264635E+02, -3.065092046E-02, 2.486903333E-06, -9.705954110E-11, 1.437538881E-15, 4.938707040E+06, -1.672099740E+03)
+N.coeficientes_6000_20000(20000, 6000, 5.475181050E+08, -3.107574980E+05, 6.916782740E+01, -6.847988130E-03, 3.827572400E-07, -1.098367709E-11, 1.277986024E-16, 2.550585618E+06, -5.848769753E+02)
+NO.coeficientes_6000_20000(20000, 6000, -9.575303540E+08, 5.912434480E+05, -1.384566826E+02, 1.694339403E-02, -1.007351096E-06, 2.912584076E-11, -3.295109350E-16, -4.677501240E+06, 1.242081216E+03)             

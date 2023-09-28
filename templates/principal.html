@@ -1,12 +1,26 @@
 <body>
     <div class="div_principal">
         {% include "head.html" %}
+
             {% include "dados_entrada.html" %}
+
             {% if rota == "/resultado" %}
                 {% include "resultado.html" %}
-            {% else %}
+            {% endif%}
+
+            {% if rota == "/" %}
                 {% include "home.html" %}
-            {% endif %}
+            {% endif%}
+
+            {% if rota == "/resultado_erro" %}
+                {% include "resultado_erro.html" %}
+            {% endif%}
+
         {% include "footer.html" %}
     </div>
 </body>
+
+
+
+
+

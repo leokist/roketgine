@@ -1,4 +1,4 @@
-from ..constantes import *
+"""from ..constantes import *
 from ..reacao import *
 
 class CamaraCombustao(Combustao):
@@ -61,4 +61,4 @@ class CamaraCombustao(Combustao):
     @property
     def t_2(self):
         t_2 = self.t_2
-        return t_2
+        return t_2"""

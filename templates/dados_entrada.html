@@ -1,4 +1,4 @@
-<form class="formDadosEntrada" action="{{ url_for('resultado') }}" method="post"> 
+<form class="formDadosEntrada" id="formDadosEntrada" action="{{ url_for('resultado') }}" method="post"> 
   <div class="div_dados_entrada_logo">
     <img class="dados_entrada_logo" src="/static/img/logo-2.png" alt="Rocketgine Logo" >
     <h1 class="titulo">Rocketgine</h1>
@@ -10,7 +10,7 @@
     </div>
     <div class="container_input container_input_comb">
       <label class="texto3 label_select" for="comb">Combustível</label>
-      <select class="select_dados_entrada" name="comb" id="comb" value="{{ request.form['comb'] }}">
+      <select class="select_dados_entrada" name="comb" id="comb" value="Etanol [C2H5OH_L]">
         <option value="C2H5OH_L">Etanol [C2H5OH_L]</option>
         <option value="H2_L">Hidrogênio [H2_L]</option>
         <option value="C8H18_L">Gasolina [C8H18_L]</option>
@@ -26,7 +26,7 @@
     
     <div class="container_input container_input_oxid">
       <label class="texto3 label_select" for="oxid">Oxidante</label>
-      <select class="select_dados_entrada" name="oxid" id="oxid" value="{{ request.form['oxid'] }}">
+      <select class="select_dados_entrada" name="oxid" id="oxid" value="Oxigênio Líquido [O2_L]">
         <option value="O2_L ">Oxigênio Líquido [O2_L]</option>
         <option value="Air_G">Ar [O2+3,76N2]</option>
         <option value="H2O2_L">Peroxido de Hidrogênio [H2O2_L]</option>
@@ -40,7 +40,7 @@
     
     <div class="container_input">
       <label class="texto3 label_dados_entrada label_raz_eq " for="raz_eq" onclick="msgRazEq()">Razão de Equivalência</label>
-      <input type="number" id="raz_eq" name="raz_eq" class="input_number" value="{{ request.form['raz_eq'] }}" step="0.01" min="0.00" required>
+      <input type="number" id="raz_eq" name="raz_eq" class="input_number" value="1" step="0.01" min="0.00" required>
     </div>
     <div class="raz_eq_mensagem texto4">
       <p>Re = 1 : Reação Estequiométrica</p>
@@ -56,7 +56,7 @@
     </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="pressao_camara">Câmara Combustão[atm]</label>
-      <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="{{ request.form['pressao_camara'] }}" required>
+      <input type="number" id="pressao_camara" name="pressao_camara" class="input_number" step="0.50" value="20" required>
     </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="pressao_externa">Ambiente[atm]</label>
@@ -70,15 +70,15 @@
     </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="comp_caract">Comp Característico[m]</label>
-      <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.10" value="{{ request.form['comp_caract'] }}" required>
+      <input type="number" id="comp_caract" name="comp_caract" class="input_number" step="0.10" value="2" required>
     </div>
     <div class="container_input">
       <label class="texto3 label_dados_entrada" for="forca_empuxo">Força de Empuxo[N]</label>
-      <input type="number" id="forca_empuxo" name="forca_empuxo" class="input_number" step="1" value="{{ request.form['forca_empuxo'] }}" required>
+      <input type="number" id="forca_empuxo" name="forca_empuxo" class="input_number" step="1" value="5000" required>
     </div>
     <div class="container_input">
       <label class="texto3 label_select" for="tipo_bocal">Tipo de Bocal</label>
-      <select class="select_dados_entrada" name="tipo_bocal" id="tipo_bocal" value="{{ request.form['tipo_bocal'] }}">
+      <select class="select_dados_entrada" name="tipo_bocal" id="tipo_bocal" value="Contorno de Sino 60%">
         <option value="conico">Cônico</option>
         <option value="sino_60">Contorno de Sino 60%</option>
         <option value="sino_80">Contorno de Sino 80%</option>
@@ -99,5 +99,7 @@
     </div>
   </div>
 
-  <button type="submit" class="botao_calcular">Calcular</button>
+  <button type="submit" class="botao_calcular" id="botao_calcular">Calcular</button>
 </form>
+
+

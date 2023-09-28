@@ -1,4 +1,4 @@
-<div class="div_resultado">
+<div class="div_resultado" id="div_resultado">
     <div class="div_resultado_camara_combustao_bocal">
         <div class="div_titulo_resultado">
             <h1 class="titulo_resultado">Câmara de Combustão e Bocal</h1>
@@ -170,7 +170,7 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    <td>Fracao Molar</td>
+                    <td>{{ label_mols }}</td>
                     {% for i in range(0, len) %}   
                         <td  class="td_valor">{{ produtos_elementos[i][1] }}</td>
                     {% endfor %}
@@ -378,3 +378,6 @@
             </table>
     </div>
 </div>
+
+
+
